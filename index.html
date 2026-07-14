@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LabSync — Lab Inventory</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧪</text></svg>"
+    />
+  </head>
+  <body>
+    <!-- Auth screen -->
+    <div id="auth" class="auth-screen">
+      <div class="auth-card">
+        <div class="brand">
+          <span class="logo">🧪</span>
+          <div>
+            <h1>LabSync</h1>
+            <p class="tagline">University Lab Inventory & Usage Tracker</p>
+          </div>
+        </div>
+
+        <div class="tabs">
+          <button class="tab active" data-tab="login">Log in</button>
+          <button class="tab" data-tab="signup">Create account</button>
+        </div>
+
+        <form id="login-form" class="auth-form">
+          <label>Username<input name="username" autocomplete="username" required /></label>
+          <label>PIN<input name="pin" type="password" inputmode="numeric" autocomplete="current-password" required /></label>
+          <button class="btn primary" type="submit">Log in for today</button>
+          <p class="form-error" id="login-error"></p>
+        </form>
+
+        <form id="signup-form" class="auth-form hidden">
+          <label>Full name<input name="name" required /></label>
+          <label>Username<input name="username" required /></label>
+          <label>Department<input name="department" placeholder="e.g. Chemistry" /></label>
+          <label>PIN (4+ digits)<input name="pin" type="password" inputmode="numeric" minlength="4" required /></label>
+          <button class="btn primary" type="submit">Create account</button>
+          <p class="form-error" id="signup-error"></p>
+        </form>
+      </div>
+      <p class="auth-foot">Data is stored locally in this browser. See README to connect a shared backend.</p>
+    </div>
+
+    <!-- Main app -->
+    <div id="app" class="app hidden">
+      <header class="topbar">
+        <div class="brand small">
+          <span class="logo">🧪</span><strong>LabSync</strong>
+        </div>
+        <nav class="nav">
+          <button class="nav-btn active" data-view="dashboard">Dashboard</button>
+          <button class="nav-btn" data-view="inventory">Inventory</button>
+          <button class="nav-btn" data-view="log">Log usage</button>
+        </nav>
+        <div class="user-box">
+          <span id="user-name"></span>
+          <button class="btn ghost" id="logout-btn">Log out</button>
+        </div>
+      </header>
+
+      <main id="view" class="view"></main>
+    </div>
+
+    <!-- Modal host -->
+    <div id="modal-root"></div>
+
+    <script type="module" src="js/app.js"></script>
+  </body>
+</html>
