@@ -1,11 +1,12 @@
-# LabSync — University Lab Inventory & Usage Tracker
+# LabSync — University Laboratory Management System
 
-A lightweight web app for keeping track of lab instruments and consumables across
-university departments. Staff log in each day, record what was used, and the app
-tracks stock levels, average daily usage, low-stock alerts, and instrument
+A web app for keeping track of lab instruments and consumables across university
+departments. Staff log in each day, record what was used, and the app tracks
+stock levels, average daily usage, low-stock alerts, and instrument
 condition/maintenance.
 
-No build step, no npm, no database — it runs as plain static files in the browser.
+Built as a proper **React + TypeScript + Vite + Tailwind CSS v4** single-page
+app, with a polished, responsive, light/dark UI.
 
 ## Features
 
@@ -20,18 +21,16 @@ No build step, no npm, no database — it runs as plain static files in the brow
   needing attention, and a usage overview sorted by which runs out soonest.
 - **Restock / correct** stock directly from an item card.
 - **Search** across name, department, location, and category.
+- **Light / dark theme** with system preference detection.
 
 ## Running
 
-Because it uses ES modules, it must be served over HTTP (not opened as `file://`).
-
 ```bash
-cd Labsync
-python3 -m http.server 8000
-# then open http://localhost:8000
+npm install
+npm run dev      # start the dev server (http://localhost:5173)
+npm run build    # type-check + production build into dist/
+npm run preview  # preview the production build
 ```
-
-Any static file server works.
 
 ## Demo account
 
@@ -40,8 +39,9 @@ On first load, sample data and a demo user are seeded automatically:
 - **Username:** `demo`
 - **PIN:** `1234`
 
-Create your own account from the "Create account" tab. To wipe all data, clear the
-site's local storage in your browser (or run `store.resetAll()` from the console).
+Create your own account from the "Create account" tab. To wipe all data, clear
+the site's local storage in your browser (or run
+`localStorage.clear()` from the console).
 
 ## Data & moving to a shared backend
 
@@ -50,18 +50,23 @@ per-browser**. This is fine for a single machine at a lab bench, but not shared
 across users.
 
 The app was built so this is an easy upgrade: **all data access goes through
-[`js/store.js`](js/store.js)**, and every method is already `async`. To make it a
-real multi-user system shared across computers, reimplement only the method bodies
-in `store.js` to call a backend API (e.g. `fetch('/api/items')`) — the rest of the
-UI (`app.js`) needs no changes. A minimal backend would expose CRUD endpoints for
-`users`, `items`, and `usage`, plus a session/login endpoint.
+[`src/lib/store.ts`](src/lib/store.ts)**, and every method is already `async`. To
+make it a real multi-user system shared across computers, reimplement only the
+method bodies in `store.ts` to call a backend API (e.g. `fetch('/api/items')`) —
+the rest of the UI needs no changes. A minimal backend would expose CRUD
+endpoints for `users`, `items`, and `usage`, plus a session/login endpoint.
 
-## Files
+## Project layout
 
-| File | Purpose |
+| Path | Purpose |
 |------|---------|
-| `index.html` | App shell — auth screen, top nav, view + modal hosts. |
-| `style.css` | All styling (dark theme, responsive). |
-| `js/store.js` | Data layer — the one file to swap for a real backend. |
-| `js/app.js` | UI, routing, and view rendering. |
-| `js/seed.js` | One-time sample data on first run (safe to delete). |
+| `index.html` | Vite entry point. |
+| `src/main.tsx` | App bootstrap (router + auth provider). |
+| `src/App.tsx` | Route definitions and auth gate. |
+| `src/lib/store.ts` | Data layer — the one file to swap for a real backend. |
+| `src/lib/seed.ts` | One-time sample data on first run. |
+| `src/lib/types.ts` | Shared domain types. |
+| `src/context/AuthContext.tsx` | Auth/session state. |
+| `src/components/` | Layout, UI primitives, modals. |
+| `src/pages/` | Auth, Dashboard, Inventory, Log usage. |
+| `legacy/` | The original static HTML/CSS/JS prototype (kept for reference). |

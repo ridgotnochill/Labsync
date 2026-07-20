@@ -1,0 +1,87 @@
+@import 'tailwindcss';
+
+/* ---------------------------------------------------------------------------
+   LabSync — Mithibai College Laboratory Management System
+   A single-theme SaaS admin UI: dark navy rail + light workspace, blue primary,
+   with green / amber / orange / red / purple as semantic accents.
+--------------------------------------------------------------------------- */
+@theme {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system,
+    'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
+  --color-primary-50: #eff6ff;
+  --color-primary-100: #dbeafe;
+  --color-primary-500: #3b82f6;
+  --color-primary-600: #2563eb;
+  --color-primary-700: #1d4ed8;
+
+  --color-navy-800: #111a2f;
+  --color-navy-900: #0d1526;
+  --color-navy-950: #0a1120;
+}
+
+@layer base {
+  :root {
+    --bg: #f6f8fb;
+    --surface: #ffffff;
+    --border: #e8ebf1;
+    --border-strong: #dde1e9;
+    --text: #0f172a;
+    --text-muted: #64748b;
+    --text-faint: #94a3b8;
+
+    /* Sidebar palette */
+    --rail: #0e1626;
+    --rail-section: #5b6b85;
+    --rail-item: #b8c2d4;
+    --rail-item-hover: #182238;
+    --rail-active: #2563eb;
+  }
+
+  * {
+    border-color: var(--border);
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+  }
+
+  h1, h2, h3, h4 {
+    letter-spacing: -0.018em;
+    text-wrap: balance;
+  }
+
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-thumb {
+    background: #cbd5e1; border-radius: 999px; border: 2px solid var(--bg);
+  }
+  .rail-scroll::-webkit-scrollbar-thumb { background: #24314c; border-color: var(--rail); }
+}
+
+@layer components {
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+  }
+  .muted { color: var(--text-muted); }
+  .faint { color: var(--text-faint); }
+  .tnum { font-variant-numeric: tabular-nums; }
+}
+
+@keyframes fade-rise {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-rise { animation: fade-rise 0.4s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
