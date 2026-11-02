@@ -1,4 +1,4 @@
-// Sample data for LabSync — mirrors the original design prototype.
+// Sample data for LabSync — mirrors the Mithibai College design prototype.
 
 export type InvCategory = 'Chemical' | 'Glassware' | 'Consumables' | 'Equipment';
 export type InvStatus = 'Available' | 'Low Stock' | 'Out of Stock';
@@ -159,7 +159,7 @@ export const trend = {
 export const profile = {
   fullName: 'Dr. Admin User',
   employeeId: 'EMP-1001',
-  email: 'admin@example.com',
+  email: 'admin@mithibai.edu',
   phone: '+91 98765 43210',
   department: 'Chemistry',
   designation: 'Lab Administrator',
