@@ -1,9 +1,9 @@
 {
-  "name": "labsync",
+  "name": "labpilot",
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "LabSync — University Laboratory Management System",
+  "description": "LabPilot — University Laboratory Management System",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",

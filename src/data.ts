@@ -1,4 +1,4 @@
-// Sample data for LabSync — mirrors the original design prototype.
+// Sample data for LabPilot — mirrors the original design prototype.
 
 export type InvCategory = 'Chemical' | 'Glassware' | 'Consumables' | 'Equipment';
 export type InvStatus = 'Available' | 'Low Stock' | 'Out of Stock';

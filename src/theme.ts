@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 export type Theme = 'light' | 'dark';
 
-const KEY = 'labsync.theme';
+const KEY = 'labpilot.theme';
 
 // index.html stamps data-theme before React mounts (no light flash); start from that.
 function initialTheme(): Theme {

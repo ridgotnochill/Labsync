@@ -3,16 +3,26 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>LabSync — Laboratory Management System</title>
+    <title>LabPilot — Laboratory Management System</title>
     <meta
       name="description"
-      content="LabSync — track lab instruments, consumables, stock levels, usage, and maintenance across university departments."
+      content="LabPilot — track lab instruments, consumables, stock levels, usage, and maintenance across university departments."
     />
     <script>
-      // Apply the saved (or OS) theme before first paint to avoid a light flash.
+      // Carry saved login, theme and data over from the app's old name, then apply
+      // the saved (or OS) theme before first paint to avoid a light flash.
       (function () {
         var t;
-        try { t = localStorage.getItem('labsync.theme'); } catch (e) {}
+        try {
+          ['authed', 'theme', 'data.v2'].forEach(function (k) {
+            var v = localStorage.getItem('labsync.' + k);
+            if (v !== null) {
+              if (localStorage.getItem('labpilot.' + k) === null) localStorage.setItem('labpilot.' + k, v);
+              localStorage.removeItem('labsync.' + k);
+            }
+          });
+        } catch (e) {}
+        try { t = localStorage.getItem('labpilot.theme'); } catch (e) {}
         if (t !== 'light' && t !== 'dark') {
           t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
         }

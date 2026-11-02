@@ -85,7 +85,7 @@ export default function UploadModal({ onClose }: { onClose: () => void }) {
 
   function downloadTemplate() {
     const url = URL.createObjectURL(new Blob(['\ufeff' + TEMPLATE_CSV], { type: 'text/csv;charset=utf-8' }));
-    const a = Object.assign(document.createElement('a'), { href: url, download: 'labsync-upload-template.csv' });
+    const a = Object.assign(document.createElement('a'), { href: url, download: 'labpilot-upload-template.csv' });
     a.click();
     URL.revokeObjectURL(url);
   }
@@ -122,7 +122,7 @@ export default function UploadModal({ onClose }: { onClose: () => void }) {
           <div>
             <h2 id="upload-title" className="text-xl font-extrabold text-[var(--text-strong)]">Upload stock update</h2>
             <p className="mt-1 text-sm muted">
-              Upload an Excel, CSV, PDF or a photo/scan of your stock list — review it, then add it to LabSync.
+              Upload an Excel, CSV, PDF or a photo/scan of your stock list — review it, then add it to LabPilot.
             </p>
           </div>
           <button
@@ -196,7 +196,7 @@ export default function UploadModal({ onClose }: { onClose: () => void }) {
             <div className="flex flex-col items-center justify-center py-20 text-center">
               <Loader2 size={36} className="animate-spin text-primary-500" />
               <p className="display mt-4 font-bold text-[var(--text-strong)]">
-                {step.name === 'reading' ? 'Scanning file…' : 'Saving to LabSync…'}
+                {step.name === 'reading' ? 'Scanning file…' : 'Saving to LabPilot…'}
               </p>
               <p className="mt-1 text-sm muted">{step.file.name}</p>
               {step.name === 'reading' && step.progress && (
@@ -290,7 +290,7 @@ export default function UploadModal({ onClose }: { onClose: () => void }) {
               <span className="grid h-16 w-16 place-items-center rounded-full bg-zest text-[#15133d]">
                 <CheckCircle2 size={30} />
               </span>
-              <p className="display mt-5 text-xl font-extrabold text-[var(--text-strong)]">LabSync updated</p>
+              <p className="display mt-5 text-xl font-extrabold text-[var(--text-strong)]">LabPilot updated</p>
               <p className="mt-1 text-sm muted">
                 {step.result.added} item{step.result.added === 1 ? '' : 's'} added · {step.result.updated} updated
                 {source === 'local' && ' · saved in this browser'}
@@ -317,7 +317,7 @@ export default function UploadModal({ onClose }: { onClose: () => void }) {
             </BtnGhost>
             {step.name === 'review' ? (
               <BtnPrimary color="zest" disabled={included.length === 0} onClick={() => confirm(step.file)}>
-                <CheckCircle2 size={16} /> Add {included.length} to LabSync
+                <CheckCircle2 size={16} /> Add {included.length} to LabPilot
               </BtnPrimary>
             ) : (
               <BtnPrimary onClick={onClose}>Done</BtnPrimary>
@@ -343,7 +343,7 @@ function SourceNote({ source }: { source: 'supabase' | 'local' }) {
     <p className="mt-4 flex items-center gap-2 text-xs faint">
       {source === 'supabase' ? <Database size={14} /> : <HardDrive size={14} />}
       {source === 'supabase'
-        ? 'Changes are saved to the shared LabSync database.'
+        ? 'Changes are saved to the shared LabPilot database.'
         : 'Database not connected — changes are saved in this browser only.'}
     </p>
   );

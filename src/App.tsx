@@ -14,7 +14,7 @@ import Notifications from './pages/Notifications';
 import AdminPanel from './pages/AdminPanel';
 import Settings from './pages/Settings';
 
-const KEY = 'labsync.authed';
+const KEY = 'labpilot.authed';
 
 export default function App() {
   const [authed, setAuthed] = useState(() => localStorage.getItem(KEY) === '1');

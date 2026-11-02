@@ -32,7 +32,7 @@ export default function Login({ onLogin }: { onLogin: () => void }) {
           <span className="grid h-16 w-16 place-items-center rounded-2xl bg-primary-600 text-white shadow-xl shadow-primary-600/40">
             <FlaskConical size={30} />
           </span>
-          <h1 className="mt-4 text-3xl font-bold text-white">LabSync</h1>
+          <h1 className="mt-4 text-3xl font-bold text-white">LabPilot</h1>
           <p className="mt-1 text-sm text-slate-400">
             Laboratory Management System
           </p>
@@ -106,7 +106,7 @@ export default function Login({ onLogin }: { onLogin: () => void }) {
         </div>
 
         <p className="mt-6 text-center text-xs text-slate-500">
-          © 2024 LabSync. For authorized laboratory staff only.
+          © 2024 LabPilot. For authorized laboratory staff only.
         </p>
       </div>
     </div>

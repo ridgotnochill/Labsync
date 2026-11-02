@@ -49,7 +49,7 @@ const LabDataContext = createContext<LabData | null>(null);
 /* ---------------------------------------------------------------- local --- */
 
 // v2: the store now starts empty; v1 held the old sample data, which is ignored.
-const LOCAL_KEY = 'labsync.data.v2';
+const LOCAL_KEY = 'labpilot.data.v2';
 
 interface LocalData {
   inventory: InventoryRecord[];

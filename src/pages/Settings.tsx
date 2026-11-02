@@ -115,7 +115,7 @@ function DataPanel() {
     <div className="card p-6">
       <h3 className="display text-lg font-bold text-[var(--text-strong)]">Data &amp; Backup</h3>
       <p className="mt-1 text-sm muted">
-        {source === 'supabase' ? 'Stored in the shared LabSync database.' : 'Stored in this browser only (database not connected).'}
+        {source === 'supabase' ? 'Stored in the shared LabPilot database.' : 'Stored in this browser only (database not connected).'}
       </p>
 
       <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-3">
@@ -134,7 +134,7 @@ function DataPanel() {
       <div className="mt-6 rounded-2xl border border-red-200 bg-red-50/60 p-5 dark:border-red-500/25 dark:bg-red-500/10">
         <div className="font-semibold text-red-700 dark:text-red-400">Clear all data</div>
         <p className="mt-1 text-sm text-[var(--text-body)]">
-          Deletes every inventory item, equipment record and upload from LabSync so you can start again from zero. This can't be undone.
+          Deletes every inventory item, equipment record and upload from LabPilot so you can start again from zero. This can't be undone.
         </p>
         <div className="mt-4 flex flex-wrap items-center gap-2.5">
           {!confirming ? (

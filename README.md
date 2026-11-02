@@ -1,4 +1,4 @@
-# LabSync — University Laboratory Management System
+# LabPilot — University Laboratory Management System
 
 A web app for keeping track of lab instruments and consumables across university
 departments. Staff log in each day, record what was used, and the app tracks

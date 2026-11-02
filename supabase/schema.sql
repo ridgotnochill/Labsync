@@ -1,4 +1,4 @@
--- LabSync database schema for Supabase (Postgres).
+-- LabPilot database schema for Supabase (Postgres).
 -- Run once in the Supabase dashboard: SQL Editor → New query → paste → Run.
 
 create table if not exists public.inventory_items (
@@ -39,7 +39,7 @@ create table if not exists public.uploads (
 
 -- ---------------------------------------------------------------------------
 -- Row Level Security
--- LabSync's login screen is not real authentication yet, so the site talks to
+-- LabPilot's login screen is not real authentication yet, so the site talks to
 -- Supabase with the public "anon" key. The policies below let anyone who can
 -- open the site read, write AND delete these tables. That is fine for a demo, but
 -- before real use, switch to Supabase Auth and change `to anon, authenticated`

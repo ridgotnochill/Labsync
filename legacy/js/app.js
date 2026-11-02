@@ -1,4 +1,4 @@
-// app.js — UI, routing, and view rendering for LabSync.
+// app.js — UI, routing, and view rendering for LabPilot.
 import { store, todayStr, averageUsage, daysRemaining } from './store.js';
 import { seedIfEmpty } from './seed.js';
 

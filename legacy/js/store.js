@@ -1,4 +1,4 @@
-// store.js — data access layer for LabSync.
+// store.js — data access layer for LabPilot.
 //
 // Every method is async (returns a Promise) even though the current
 // implementation is synchronous localStorage. This is deliberate: to move to a
@@ -13,11 +13,11 @@
 //   Login     { userId, date (YYYY-MM-DD) }   // records a daily check-in
 
 const KEYS = {
-  users: 'labsync.users',
-  items: 'labsync.items',
-  usage: 'labsync.usage',
-  logins: 'labsync.logins',
-  session: 'labsync.session',
+  users: 'labpilot.users',
+  items: 'labpilot.items',
+  usage: 'labpilot.usage',
+  logins: 'labpilot.logins',
+  session: 'labpilot.session',
 };
 
 const uid = () =>

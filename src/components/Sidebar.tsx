@@ -58,7 +58,7 @@ export default function Sidebar({ onLogout }: { onLogout: () => void }) {
           <FlaskConical size={19} />
         </span>
         <div className="leading-tight">
-          <div className="display text-[17px] font-extrabold text-white">LabSync</div>
+          <div className="display text-[17px] font-extrabold text-white">LabPilot</div>
           <div className="text-xs text-primary-300">Lab Management</div>
         </div>
       </div>
