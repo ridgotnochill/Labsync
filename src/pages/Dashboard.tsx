@@ -71,7 +71,7 @@ export default function Dashboard() {
         <div className="pointer-events-none absolute -bottom-24 left-1/3 h-64 w-64 rounded-full bg-primary-300/30 blur-3xl" />
 
         <div className="relative px-7 pt-8 pb-7 sm:px-10 sm:pt-10">
-          <p className="text-sm text-white/85">Monday, 01 July 2024 · Mithibai College</p>
+          <p className="text-sm text-white/85">Monday, 01 July 2024</p>
           <h1 className="mt-3 max-w-xl text-4xl leading-[0.95] font-extrabold sm:text-5xl">
             Good morning,
             <br />

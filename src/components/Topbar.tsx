@@ -24,7 +24,7 @@ export default function Topbar() {
   return (
     <header className="sticky top-0 z-30 flex items-center gap-4 border-b border-[var(--border)] bg-[var(--surface)]/85 px-6 py-3.5 backdrop-blur-md">
       <div className="flex items-center gap-2 text-sm">
-        <span className="muted">Mithibai College</span>
+        <span className="muted">LabSync</span>
         <span className="faint">›</span>
         <span className="display font-bold text-[var(--text-strong)]">{title}</span>
       </div>

@@ -1,4 +1,4 @@
-// Sample data for LabSync — mirrors the Mithibai College design prototype.
+// Sample data for LabSync — mirrors the original design prototype.
 
 export type InvCategory = 'Chemical' | 'Glassware' | 'Consumables' | 'Equipment';
 export type InvStatus = 'Available' | 'Low Stock' | 'Out of Stock';
@@ -103,7 +103,7 @@ export const damageReports: DamageReport[] = [
   {
     item: 'Beaker (250 ml)', reportedOn: '15 Jan 2024', reportNo: '001', fine: '₹50', resolved: true,
     description: 'Beaker shattered during acid-base titration due to improper handling near the Bunsen burner.',
-    remarks: 'Student cautioned. Fine levied as per college policy.',
+    remarks: 'Student cautioned. Fine levied as per lab policy.',
   },
   {
     item: 'Glass Thermometer (-10°C to 110°C)', reportedOn: '03 Mar 2024', reportNo: '002', fine: '₹120', resolved: false,
@@ -159,7 +159,7 @@ export const trend = {
 export const profile = {
   fullName: 'Dr. Admin User',
   employeeId: 'EMP-1001',
-  email: 'admin@mithibai.edu',
+  email: 'admin@example.com',
   phone: '+91 98765 43210',
   department: 'Chemistry',
   designation: 'Lab Administrator',

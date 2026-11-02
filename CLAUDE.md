@@ -15,7 +15,7 @@ There is no test runner, linter, or formatter configured. `npm run build` (which
 
 ## What this actually is
 
-LabSync is a **static, front-end-only UI prototype** of a Mithibai College laboratory management dashboard (inventory, equipment, lab schedule, chemical expiry, damage reports, admin). Most pages render hard-coded arrays exported from `src/data.ts` and are read-only; buttons and forms there are presentational. The exception is **Inventory and Equipment**, which read live data from `src/lib/labStore.tsx` and can be changed through the file-upload flow (see below).
+LabSync is a **static, front-end-only UI prototype** of a laboratory management dashboard (inventory, equipment, lab schedule, chemical expiry, damage reports, admin). Most pages render hard-coded arrays exported from `src/data.ts` and are read-only; buttons and forms there are presentational. The exception is **Inventory and Equipment**, which read live data from `src/lib/labStore.tsx` and can be changed through the file-upload flow (see below).
 
 ⚠️ **`README.md` is stale and describes a different, older version of the app** — it references `src/lib/store.ts` with async methods, a PIN-based `AuthContext`, `src/context/`, and daily-usage logging. None of that exists in the current `src/`. Trust the code, not the README, for architecture.
 

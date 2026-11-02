@@ -59,7 +59,7 @@ export default function Sidebar({ onLogout }: { onLogout: () => void }) {
         </span>
         <div className="leading-tight">
           <div className="display text-[17px] font-extrabold text-white">LabSync</div>
-          <div className="text-xs text-primary-300">Mithibai College</div>
+          <div className="text-xs text-primary-300">Lab Management</div>
         </div>
       </div>
 
