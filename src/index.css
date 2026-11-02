@@ -1,7 +1,7 @@
 @import 'tailwindcss';
 
 /* ---------------------------------------------------------------------------
-   LabSync — Mithibai College Laboratory Management System
+   LabSync — Laboratory Management System
    Deep-indigo rail + soft lavender workspace, violet primary, uppercase mono
    display type, pill buttons, lime / orange highlight accents. A dark theme is
    applied via [data-theme='dark'] on <html> (see src/theme.ts).

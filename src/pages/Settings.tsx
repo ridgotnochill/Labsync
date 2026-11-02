@@ -66,7 +66,7 @@ export default function Settings() {
               </span>
               <div className="min-w-0">
                 <div className="font-semibold text-[var(--text-strong)]">Dr. Admin</div>
-                <div className="text-sm muted">Administrator · Mithibai College</div>
+                <div className="text-sm muted">Administrator</div>
               </div>
               <button className="ml-auto rounded-full border border-primary-200 dark:border-primary-500/25 bg-primary-50 dark:bg-primary-500/10 px-3.5 py-2 text-sm font-medium text-primary-700 dark:text-primary-400 transition-colors hover:bg-primary-100 dark:hover:bg-primary-500/20">
                 Change Photo
