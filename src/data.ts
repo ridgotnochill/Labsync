@@ -13,24 +13,9 @@ export interface InventoryItem {
   status: InvStatus;
 }
 
-export const inventory: InventoryItem[] = [
-  { name: 'Hydrochloric Acid (36%)', category: 'Chemical', qty: 8, unit: 'Bottles (500 ml)', location: 'Lab A – Shelf 2', expiry: '2024-12-15', status: 'Low Stock' },
-  { name: 'Beakers 250 ml', category: 'Glassware', qty: 45, unit: 'Pieces', location: 'Lab B – Cabinet 1', expiry: null, status: 'Available' },
-  { name: 'Microscope Slides', category: 'Consumables', qty: 200, unit: 'Pieces', location: 'Storage Room', expiry: null, status: 'Available' },
-  { name: 'Sodium Hydroxide Pellets', category: 'Chemical', qty: 3, unit: 'Bags (1 kg)', location: 'Lab C – Shelf 1', expiry: '2025-03-20', status: 'Low Stock' },
-  { name: 'Bunsen Burners', category: 'Equipment', qty: 15, unit: 'Units', location: 'Lab A – Counter', expiry: null, status: 'Available' },
-  { name: 'Filter Paper Grade 1', category: 'Consumables', qty: 500, unit: 'Sheets', location: 'Storage Room', expiry: null, status: 'Available' },
-  { name: 'Ethanol (95%)', category: 'Chemical', qty: 0, unit: 'Bottles (2 L)', location: 'Lab B – Shelf 3', expiry: '2024-09-30', status: 'Out of Stock' },
-  { name: 'Conical Flask 250 ml', category: 'Glassware', qty: 30, unit: 'Pieces', location: 'Lab C – Cabinet 2', expiry: null, status: 'Available' },
-  { name: 'Acetone (Pure)', category: 'Chemical', qty: 5, unit: 'Bottles (1 L)', location: 'Lab A – Shelf 1', expiry: '2025-06-10', status: 'Available' },
-];
+// Starts empty — real items arrive through the upload flow (src/lib/labStore.tsx).
+export const inventory: InventoryItem[] = [];
 
-export const inventoryStats = {
-  total: 485,
-  lowStock: 5,
-  outOfStock: 1,
-  expiringSoon: 3,
-};
 
 export type EquipStatus = 'Working' | 'Under Maintenance' | 'Calibration Due';
 
@@ -44,14 +29,7 @@ export interface Equipment {
   nextService: string;
 }
 
-export const equipment: Equipment[] = [
-  { name: 'Analytical Balance', serial: 'AB-2024-001', lab: 'Lab A', status: 'Working', calibrationDue: '2024-10-15', lastServiced: '15 Jan 2024', nextService: '15 Jul 2024' },
-  { name: 'Compound Microscope', serial: 'CM-2023-012', lab: 'Lab B', status: 'Under Maintenance', calibrationDue: '2024-06-01', lastServiced: '01 Dec 2023', nextService: '01 Jun 2024' },
-  { name: 'Digital pH Meter', serial: 'PM-2024-003', lab: 'Lab C', status: 'Calibration Due', calibrationDue: '2024-07-15', lastServiced: '15 Jan 2024', nextService: '15 Jul 2024' },
-  { name: 'High-Speed Centrifuge', serial: 'CF-2022-004', lab: 'Lab A', status: 'Working', calibrationDue: '2024-11-20', lastServiced: '20 Feb 2024', nextService: '20 Aug 2024' },
-  { name: 'Autoclave 25 L', serial: 'AC-2021-005', lab: 'Lab B', status: 'Working', calibrationDue: '2024-09-10', lastServiced: '10 Mar 2024', nextService: '10 Sep 2024' },
-  { name: 'UV Spectrophotometer', serial: 'UV-2023-006', lab: 'Lab C', status: 'Under Maintenance', calibrationDue: '2024-08-05', lastServiced: '05 Dec 2023', nextService: '05 Jun 2024' },
-];
+export const equipment: Equipment[] = [];
 
 export type SlotKind = 'occupied' | 'reserved' | 'available';
 export interface Slot {
@@ -100,41 +78,7 @@ export const schedule: Slot[][] = [
   ],
 ];
 
-export interface LowStock {
-  name: string;
-  unit: string;
-  remaining: number;
-  minimum: number;
-  recommended: number;
-  level: 'Low Stock' | 'Critical';
-}
-
-export const lowStock: LowStock[] = [
-  { name: 'Hydrochloric Acid (36%)', unit: 'Bottles', remaining: 8, minimum: 20, recommended: 30, level: 'Low Stock' },
-  { name: 'Sodium Hydroxide Pellets', unit: 'Bags (1 kg)', remaining: 3, minimum: 10, recommended: 15, level: 'Critical' },
-  { name: 'Litmus Paper (Red)', unit: 'Packs', remaining: 2, minimum: 5, recommended: 8, level: 'Low Stock' },
-  { name: 'Disposable Gloves (M)', unit: 'Boxes', remaining: 15, minimum: 20, recommended: 30, level: 'Low Stock' },
-  { name: 'Petri Dishes (90 mm)', unit: 'Pieces', remaining: 25, minimum: 50, recommended: 100, level: 'Low Stock' },
-];
-
 export type ExpiryStatus = 'Critical' | 'Warning' | 'Safe';
-export interface Chemical {
-  name: string;
-  batch: string;
-  quantity: string;
-  expiry: string;
-  daysRemaining: number;
-  status: ExpiryStatus;
-}
-
-export const chemicals: Chemical[] = [
-  { name: 'Acetaldehyde (99%)', batch: 'ACD-2023-034', quantity: '3 Bottles (1 L)', expiry: '2024-07-10', daysRemaining: 5, status: 'Critical' },
-  { name: 'Formaldehyde (40%)', batch: 'FA-2023-008', quantity: '4 Bottles (1 L)', expiry: '2024-07-18', daysRemaining: 13, status: 'Critical' },
-  { name: 'Acetic Acid (Glacial)', batch: 'AA-2022-145', quantity: '6 Bottles (2.5 L)', expiry: '2024-08-22', daysRemaining: 28, status: 'Warning' },
-  { name: 'Ethanol (95%)', batch: 'ETH-2022-089', quantity: '8 Bottles (2 L)', expiry: '2024-09-30', daysRemaining: 45, status: 'Warning' },
-  { name: 'Hydrochloric Acid (36%)', batch: 'HCL-2022-112', quantity: '12 Bottles (500 ml)', expiry: '2024-12-15', daysRemaining: 120, status: 'Safe' },
-  { name: 'Sodium Thiosulphate', batch: 'ST-2022-067', quantity: '5 Bags (500 g)', expiry: '2025-01-20', daysRemaining: 180, status: 'Safe' },
-];
 
 export interface DamageReport {
   item: string;

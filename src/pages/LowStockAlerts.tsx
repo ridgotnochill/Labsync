@@ -1,66 +1,67 @@
-import { FileText, ArrowRight } from 'lucide-react';
-import { lowStock } from '../data';
-import { Badge, BtnPrimary, PageHeader } from '../components/ui';
-
-function StatBox({ value, label, tone }: { value: number; label: string; tone: string }) {
-  return (
-    <div className="rounded-xl border border-[var(--border)] bg-slate-50/60 px-3 py-3 text-center">
-      <div className={`text-2xl font-bold tnum ${tone}`}>{value}</div>
-      <div className="mt-0.5 text-xs muted">{label}</div>
-    </div>
-  );
-}
+import { FileText, ArrowRight, PackageCheck, MapPin } from 'lucide-react';
+import { Badge, BtnPrimary, EmptyState, PageHeader } from '../components/ui';
+import { UploadButton } from '../components/UploadModal';
+import { useLabData } from '../lib/labStore';
+import { summarize } from '../lib/summary';
 
 export default function LowStockAlerts() {
+  const { inventory, equipment } = useLabData();
+  const { lowStock } = summarize(inventory, equipment);
+
   return (
     <div>
       <PageHeader
         title="Low Stock Alerts"
-        subtitle="Items below minimum threshold — immediate restocking required"
+        subtitle="Items marked Low Stock or Out of Stock — restock these first"
         actions={<BtnPrimary color="orange"><FileText size={16} /> Generate Purchase Request</BtnPrimary>}
       />
 
-      <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-        {lowStock.map((it) => {
-          const pct = Math.round((it.remaining / it.minimum) * 100);
-          const critical = it.level === 'Critical';
-          const remainingTone = critical ? 'text-red-600' : 'text-orange-500';
-          return (
-            <div key={it.name} className="card p-5">
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <h3 className="font-semibold text-slate-900">{it.name}</h3>
-                  <p className="text-sm muted">Unit: {it.unit}</p>
+      {lowStock.length === 0 ? (
+        <EmptyState
+          icon={<PackageCheck size={24} />}
+          title={inventory.length === 0 ? 'No inventory yet' : 'Everything is stocked'}
+          text={
+            inventory.length === 0
+              ? 'Upload your stock list and any item that is low or out of stock will appear here.'
+              : 'No items are low or out of stock right now.'
+          }
+          action={inventory.length === 0 ? <UploadButton /> : undefined}
+        />
+      ) : (
+        <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+          {lowStock.map((it) => {
+            const out = it.status === 'Out of Stock';
+            const tone = out ? 'text-red-600 dark:text-red-400' : 'text-orange-500';
+            return (
+              <div key={it.id} className="card p-5">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <h3 className="font-semibold text-[var(--text-strong)]">{it.name}</h3>
+                    <p className="text-sm muted">{it.category}</p>
+                  </div>
+                  <Badge tone={out ? 'red' : 'orange'}>{it.status}</Badge>
                 </div>
-                <Badge tone={critical ? 'red' : 'orange'}>{it.level}</Badge>
-              </div>
 
-              <div className="mt-4 grid grid-cols-3 gap-3">
-                <StatBox value={it.remaining} label="Remaining" tone={remainingTone} />
-                <StatBox value={it.minimum} label="Minimum" tone="text-slate-700" />
-                <StatBox value={it.recommended} label="Recommended" tone="text-primary-600" />
-              </div>
-
-              <div className="mt-4">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="muted">Current stock level</span>
-                  <span className={`font-semibold ${remainingTone}`}>{pct}% of minimum</span>
+                <div className="mt-4 flex items-end justify-between gap-3 rounded-2xl border border-[var(--border)] bg-[var(--surface-2)] px-4 py-3">
+                  <div>
+                    <div className={`display text-3xl font-extrabold tnum ${tone}`}>{it.qty}</div>
+                    <div className="text-xs muted">Remaining{it.unit && ` · ${it.unit}`}</div>
+                  </div>
+                  {it.location && (
+                    <span className="flex items-center gap-1 text-xs muted">
+                      <MapPin size={13} /> {it.location}
+                    </span>
+                  )}
                 </div>
-                <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-slate-100">
-                  <div
-                    className={`h-full rounded-full ${critical ? 'bg-red-500' : 'bg-orange-500'}`}
-                    style={{ width: `${Math.min(pct, 100)}%` }}
-                  />
-                </div>
-              </div>
 
-              <button className="mt-4 flex w-full items-center justify-center gap-1.5 rounded-lg border border-[var(--border-strong)] py-2.5 text-sm font-medium text-primary-600 transition-colors hover:bg-primary-50">
-                Request Purchase <ArrowRight size={15} />
-              </button>
-            </div>
-          );
-        })}
-      </div>
+                <button className="mt-4 flex w-full items-center justify-center gap-1.5 rounded-full border border-[var(--border-strong)] py-2.5 text-sm font-medium text-primary-600 dark:text-primary-400 transition-colors hover:bg-primary-50 dark:hover:bg-primary-500/10">
+                  Request Purchase <ArrowRight size={15} />
+                </button>
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

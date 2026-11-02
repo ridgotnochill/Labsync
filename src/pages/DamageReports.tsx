@@ -14,25 +14,25 @@ export default function DamageReports() {
       {/* Search */}
       <div className="card flex flex-col gap-3 p-4 sm:flex-row sm:items-center">
         <div className="relative flex-1">
-          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-faint)]" />
           <input
             defaultValue={damageStudent.sapId}
-            className="w-full rounded-lg border border-[var(--border)] bg-white py-2.5 pl-9 pr-3 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20"
+            className="w-full rounded-full border border-[var(--border)] bg-[var(--surface)] py-2.5 pl-9 pr-3 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20"
           />
         </div>
         <BtnPrimary>Search</BtnPrimary>
-        <button className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--border-strong)] bg-white px-3.5 py-2 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-50">
+        <button className="inline-flex items-center gap-1.5 rounded-full border border-[var(--border-strong)] bg-[var(--surface)] px-3.5 py-2 text-sm font-medium text-[var(--text-body)] transition-colors hover:bg-[var(--surface-2)]">
           Try: Priya Nair <ArrowRight size={15} />
         </button>
       </div>
 
       {/* Student card */}
       <div className="card mt-5 flex flex-wrap items-center gap-4 p-5">
-        <span className="grid h-12 w-12 place-items-center rounded-xl bg-blue-50 text-blue-600">
+        <span className="grid h-12 w-12 place-items-center rounded-full bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400">
           <GraduationCap size={22} />
         </span>
         <div className="min-w-0">
-          <h3 className="text-lg font-semibold text-slate-900">{damageStudent.name}</h3>
+          <h3 className="text-lg font-semibold text-[var(--text-strong)]">{damageStudent.name}</h3>
           <p className="text-sm muted">
             SAP ID: {damageStudent.sapId} · {damageStudent.course} · {damageStudent.semester}
           </p>
@@ -49,7 +49,7 @@ export default function DamageReports() {
           <div key={r.reportNo} className="card p-5">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
-                <h4 className="font-semibold text-slate-900">{r.item}</h4>
+                <h4 className="font-semibold text-[var(--text-strong)]">{r.item}</h4>
                 <p className="text-sm muted">Reported on {r.reportedOn} · Report #{r.reportNo}</p>
               </div>
               <div className="flex items-center gap-2">
@@ -58,21 +58,21 @@ export default function DamageReports() {
               </div>
             </div>
 
-            <div className="mt-4 rounded-xl bg-slate-50 p-4">
-              <div className="text-xs font-semibold uppercase tracking-wide text-slate-500">Description</div>
-              <p className="mt-1 text-sm text-slate-700">{r.description}</p>
+            <div className="mt-4 rounded-2xl bg-[var(--surface-2)] p-4">
+              <div className="text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]">Description</div>
+              <p className="mt-1 text-sm text-[var(--text-body)]">{r.description}</p>
             </div>
 
-            <div className="mt-3 rounded-xl bg-blue-50/70 p-4">
-              <div className="text-xs font-semibold uppercase tracking-wide text-blue-600">Faculty Remarks</div>
-              <p className="mt-1 text-sm text-slate-700">{r.remarks}</p>
+            <div className="mt-3 rounded-2xl bg-blue-50/70 dark:bg-blue-500/10 p-4">
+              <div className="text-xs font-semibold uppercase tracking-wide text-blue-600 dark:text-blue-400">Faculty Remarks</div>
+              <p className="mt-1 text-sm text-[var(--text-body)]">{r.remarks}</p>
             </div>
 
             <div className="mt-4 flex gap-2">
-              <button className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--border-strong)] bg-white px-3.5 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50">
+              <button className="inline-flex items-center gap-1.5 rounded-full border border-[var(--border-strong)] bg-[var(--surface)] px-3.5 py-2 text-sm font-medium text-[var(--text-body)] transition-colors hover:bg-[var(--surface-2)]">
                 <Eye size={15} /> View Evidence
               </button>
-              <button className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--border-strong)] bg-white px-3.5 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50">
+              <button className="inline-flex items-center gap-1.5 rounded-full border border-[var(--border-strong)] bg-[var(--surface)] px-3.5 py-2 text-sm font-medium text-[var(--text-body)] transition-colors hover:bg-[var(--surface-2)]">
                 <Pencil size={15} /> Edit Report
               </button>
             </div>

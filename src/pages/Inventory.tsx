@@ -1,9 +1,11 @@
 import { useMemo, useState } from 'react';
-import { Search, Upload, Download, Plus } from 'lucide-react';
-import { inventory, inventoryStats } from '../data';
+import { Search, Download, Plus, Loader2 } from 'lucide-react';
 import type { InvStatus } from '../data';
 import { Badge, BtnGhost, BtnPrimary, CATEGORY_TONE, PageHeader, Tabs } from '../components/ui';
 import type { Tone } from '../components/ui';
+import { UploadButton } from '../components/UploadModal';
+import { useLabData } from '../lib/labStore';
+import { summarize } from '../lib/summary';
 
 const STATUS_TONE: Record<InvStatus, Tone> = {
   Available: 'green',
@@ -25,6 +27,8 @@ function MiniStat({ label, value, tone }: { label: string; value: number; tone: 
 export default function Inventory() {
   const [tab, setTab] = useState('All');
   const [q, setQ] = useState('');
+  const { inventory, equipment, loading, error, recent } = useLabData();
+  const stats = summarize(inventory, equipment);
 
   const rows = useMemo(() => {
     return inventory.filter((it) => {
@@ -32,7 +36,7 @@ export default function Inventory() {
       const matchQ = it.name.toLowerCase().includes(q.toLowerCase());
       return matchTab && matchQ;
     });
-  }, [tab, q]);
+  }, [inventory, tab, q]);
 
   return (
     <div>
@@ -41,7 +45,7 @@ export default function Inventory() {
         subtitle="Manage all lab supplies, chemicals, glassware, and consumables"
         actions={
           <>
-            <BtnGhost><Upload size={16} /> Import Excel</BtnGhost>
+            <UploadButton variant="ghost" />
             <BtnGhost><Download size={16} /> Export</BtnGhost>
             <BtnPrimary><Plus size={16} /> Add Item</BtnPrimary>
           </>
@@ -49,30 +53,36 @@ export default function Inventory() {
       />
 
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-        <MiniStat label="Total Items" value={inventoryStats.total} tone="text-primary-600" />
-        <MiniStat label="Low Stock" value={inventoryStats.lowStock} tone="text-orange-500" />
-        <MiniStat label="Out of Stock" value={inventoryStats.outOfStock} tone="text-red-500" />
-        <MiniStat label="Expiring Soon" value={inventoryStats.expiringSoon} tone="text-amber-500" />
+        <MiniStat label="Total Items" value={stats.totalItems} tone="text-primary-600 dark:text-primary-400" />
+        <MiniStat label="Low Stock" value={stats.lowStock.length - stats.outOfStock} tone="text-orange-500" />
+        <MiniStat label="Out of Stock" value={stats.outOfStock} tone="text-red-500" />
+        <MiniStat label="Expiring Soon" value={stats.expiringSoon} tone="text-amber-500" />
       </div>
 
       <div className="mt-5 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
         <div className="relative flex-1 lg:max-w-md">
-          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-faint)]" />
           <input
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder="Search inventory items..."
-            className="w-full rounded-xl border border-[var(--border)] bg-white py-2.5 pl-9 pr-3 text-sm placeholder:text-slate-400 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20"
+            className="w-full rounded-full border border-[var(--border)] bg-[var(--surface)] py-2.5 pl-9 pr-3 text-sm placeholder:text-[var(--text-faint)] focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20"
           />
         </div>
         <Tabs tabs={FILTERS} active={tab} onChange={setTab} />
       </div>
 
+      {error && (
+        <div className="mt-5 rounded-2xl border border-red-200 bg-red-50 px-5 py-3 text-sm text-red-700 dark:border-red-500/25 dark:bg-red-500/10 dark:text-red-400">
+          {error}
+        </div>
+      )}
+
       <div className="card mt-5 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[880px] text-sm">
             <thead>
-              <tr className="border-b border-[var(--border)] text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
+              <tr className="border-b border-[var(--border)] text-left text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]">
                 <th className="px-5 py-3.5">Item Name</th>
                 <th className="px-5 py-3.5">Category</th>
                 <th className="px-5 py-3.5">Qty</th>
@@ -84,19 +94,43 @@ export default function Inventory() {
             </thead>
             <tbody className="divide-y divide-[var(--border)]">
               {rows.map((it) => (
-                <tr key={it.name} className="transition-colors hover:bg-slate-50/70">
-                  <td className="px-5 py-4 font-semibold text-slate-900">{it.name}</td>
+                <tr
+                  key={it.id}
+                  className={`transition-colors hover:bg-[var(--surface-2)] ${recent.has(it.name.trim().toLowerCase()) ? 'bg-primary-50/60 dark:bg-primary-500/10' : ''}`}
+                >
+                  <td className="px-5 py-4 font-semibold text-[var(--text-strong)]">
+                    {it.name}
+                    {recent.has(it.name.trim().toLowerCase()) && (
+                      <span className="ml-2 align-middle"><Badge tone="purple">Just updated</Badge></span>
+                    )}
+                  </td>
                   <td className="px-5 py-4">
                     <span className={`font-medium ${CATEGORY_TONE[it.category]}`}>{it.category}</span>
                   </td>
-                  <td className="px-5 py-4 tnum text-slate-700">{it.qty}</td>
+                  <td className="px-5 py-4 tnum text-[var(--text-body)]">{it.qty}</td>
                   <td className="px-5 py-4 muted">{it.unit}</td>
                   <td className="px-5 py-4 muted">{it.location}</td>
                   <td className="px-5 py-4 tnum muted">{it.expiry ?? '—'}</td>
                   <td className="px-5 py-4"><Badge tone={STATUS_TONE[it.status]}>{it.status}</Badge></td>
                 </tr>
               ))}
-              {rows.length === 0 && (
+              {loading && (
+                <tr>
+                  <td colSpan={7} className="px-5 py-10 text-center muted">
+                    <Loader2 size={18} className="mr-2 inline animate-spin" /> Loading inventory…
+                  </td>
+                </tr>
+              )}
+              {!loading && inventory.length === 0 && (
+                <tr>
+                  <td colSpan={7} className="px-5 py-14 text-center">
+                    <p className="display font-bold text-[var(--text-strong)]">No inventory yet</p>
+                    <p className="mt-1 text-sm muted">Upload your stock list (Excel, CSV or PDF) to fill this table.</p>
+                    <div className="mt-4 inline-block"><UploadButton /></div>
+                  </td>
+                </tr>
+              )}
+              {!loading && inventory.length > 0 && rows.length === 0 && (
                 <tr>
                   <td colSpan={7} className="px-5 py-10 text-center muted">No items match your filters.</td>
                 </tr>

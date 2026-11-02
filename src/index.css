@@ -2,40 +2,88 @@
 
 /* ---------------------------------------------------------------------------
    LabSync — Mithibai College Laboratory Management System
-   A single-theme SaaS admin UI: dark navy rail + light workspace, blue primary,
-   with green / amber / orange / red / purple as semantic accents.
+   Deep-indigo rail + soft lavender workspace, violet primary, uppercase mono
+   display type, pill buttons, lime / orange highlight accents. A dark theme is
+   applied via [data-theme='dark'] on <html> (see src/theme.ts).
 --------------------------------------------------------------------------- */
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
 @theme {
   --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system,
     'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-display: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
 
-  --color-primary-50: #eff6ff;
-  --color-primary-100: #dbeafe;
-  --color-primary-500: #3b82f6;
-  --color-primary-600: #2563eb;
-  --color-primary-700: #1d4ed8;
+  /* Violet primary */
+  --color-primary-50: #f3f0ff;
+  --color-primary-100: #e6e0ff;
+  --color-primary-300: #b7a8f5;
+  --color-primary-400: #9b86ee;
+  --color-primary-500: #7c5ce6;
+  --color-primary-600: #6a45d9;
+  --color-primary-700: #5b3ccc;
 
-  --color-navy-800: #111a2f;
-  --color-navy-900: #0d1526;
-  --color-navy-950: #0a1120;
+  /* Highlight accents */
+  --color-zest: #d7f36a;
+  --color-zest-hover: #c9ea4f;
+  --color-ember: #e2722f;
+
+  --color-navy-800: #14133a;
+  --color-navy-900: #0f0e2e;
+  --color-navy-950: #0b0a22;
 }
 
 @layer base {
   :root {
-    --bg: #f6f8fb;
+    color-scheme: light;
+    --bg: #dcdcec;
     --surface: #ffffff;
-    --border: #e8ebf1;
-    --border-strong: #dde1e9;
-    --text: #0f172a;
-    --text-muted: #64748b;
-    --text-faint: #94a3b8;
+    --surface-2: #f5f4fc;
+    --surface-3: #ecebf7;
+    --border: #e4e2f2;
+    --border-strong: #d6d3ea;
+    --text: #15133d;
+    --text-strong: #15133d;
+    --text-body: #3b3866;
+    --text-muted: #5c5984;
+    --text-faint: #625f89;
+    --chart-grid: #eceaf6;
+    --scrollbar: #c3c0dc;
 
     /* Sidebar palette */
-    --rail: #0e1626;
-    --rail-section: #5b6b85;
-    --rail-item: #b8c2d4;
-    --rail-item-hover: #182238;
-    --rail-active: #2563eb;
+    --rail: #0f0e2e;
+    --rail-border: transparent;
+    --rail-section: #7471a3;
+    --rail-item: #c4c1e4;
+    --rail-item-hover: #1d1b4a;
+    --rail-active: #6a45d9;
+
+    /* Signature gradient panel (hero banners) */
+    --hero: radial-gradient(circle at 88% 12%, rgba(196, 184, 255, 0.6), transparent 42%),
+      linear-gradient(125deg, #5b3fcf 0%, #3d2d9e 42%, #1f1a5c 78%, #14133a 100%);
+  }
+
+  [data-theme='dark'] {
+    color-scheme: dark;
+    --bg: #0b0a22;
+    --surface: #14133a;
+    --surface-2: #1b1a48;
+    --surface-3: #232156;
+    --border: #262463;
+    --border-strong: #322f75;
+    --text: #eeedfb;
+    --text-strong: #eeedfb;
+    --text-body: #cfcdea;
+    --text-muted: #a5a2cc;
+    --text-faint: #8d8ab8;
+    --chart-grid: #262463;
+    --scrollbar: #322f75;
+
+    --rail: #08071a;
+    --rail-border: #1d1b4a;
+    --rail-item-hover: #17163f;
+
+    --hero: radial-gradient(circle at 88% 12%, rgba(155, 134, 238, 0.45), transparent 42%),
+      linear-gradient(125deg, #4a32b8 0%, #2f2382 42%, #18154a 78%, #100f2e 100%);
   }
 
   * {
@@ -58,18 +106,35 @@
     text-wrap: balance;
   }
 
+  /* Page and section titles use the uppercase mono display face. */
+  h1, h2 {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+  }
+
   ::-webkit-scrollbar { width: 10px; height: 10px; }
   ::-webkit-scrollbar-thumb {
-    background: #cbd5e1; border-radius: 999px; border: 2px solid var(--bg);
+    background: var(--scrollbar); border-radius: 999px; border: 2px solid var(--bg);
   }
-  .rail-scroll::-webkit-scrollbar-thumb { background: #24314c; border-color: var(--rail); }
+  .rail-scroll::-webkit-scrollbar-thumb { background: #2a2766; border-color: var(--rail); }
 }
 
 @layer components {
   .card {
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 16px;
+    border-radius: 24px;
+  }
+  .hero {
+    background: var(--hero);
+    color: #fff;
+    border-radius: 28px;
+  }
+  .display {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
   }
   .muted { color: var(--text-muted); }
   .faint { color: var(--text-faint); }

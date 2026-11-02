@@ -39,7 +39,7 @@ export default function Login({ onLogin }: { onLogin: () => void }) {
         </div>
 
         {/* Card */}
-        <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-6 shadow-2xl backdrop-blur-xl sm:p-8">
+        <div className="rounded-[28px] border border-white/10 bg-white/[0.04] p-6 shadow-2xl backdrop-blur-xl sm:p-8">
           <h2 className="text-lg font-semibold text-white">Sign in to continue</h2>
           <p className="mt-1 text-sm text-slate-400">Select your role and enter your credentials.</p>
 
@@ -51,7 +51,7 @@ export default function Login({ onLogin }: { onLogin: () => void }) {
                 <button
                   key={r.key}
                   onClick={() => setRole(r.key)}
-                  className={`flex items-start gap-2.5 rounded-xl border p-3 text-left transition-all ${
+                  className={`flex items-start gap-2.5 rounded-2xl border p-3 text-left transition-all ${
                     active
                       ? 'border-primary-500 bg-primary-500/15 ring-1 ring-primary-500/40'
                       : 'border-white/10 bg-white/[0.03] hover:border-white/25'
@@ -85,7 +85,7 @@ export default function Login({ onLogin }: { onLogin: () => void }) {
               <label className="mb-1.5 block text-sm font-medium text-slate-300">Email / Employee ID</label>
               <input
                 defaultValue="admin@mithibai.edu"
-                className="w-full rounded-lg border border-white/10 bg-white/[0.06] px-3.5 py-2.5 text-sm text-white placeholder:text-slate-500 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/30"
+                className="w-full rounded-full border border-white/10 bg-white/[0.06] px-5 py-2.5 text-sm text-white placeholder:text-slate-500 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/30"
               />
             </div>
             <div>
@@ -93,12 +93,12 @@ export default function Login({ onLogin }: { onLogin: () => void }) {
               <input
                 type="password"
                 defaultValue="password"
-                className="w-full rounded-lg border border-white/10 bg-white/[0.06] px-3.5 py-2.5 text-sm text-white placeholder:text-slate-500 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/30"
+                className="w-full rounded-full border border-white/10 bg-white/[0.06] px-5 py-2.5 text-sm text-white placeholder:text-slate-500 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/30"
               />
             </div>
             <button
               type="submit"
-              className="w-full rounded-lg bg-primary-600 py-2.5 text-sm font-semibold text-white shadow-lg shadow-primary-600/30 transition-colors hover:bg-primary-700"
+              className="w-full rounded-full bg-zest py-3 text-xs font-bold uppercase tracking-wide text-[#15133d] shadow-lg shadow-zest/20 transition-colors hover:bg-zest-hover"
             >
               Sign In
             </button>

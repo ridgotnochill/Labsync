@@ -9,11 +9,11 @@ const ICONS: Record<string, LucideIcon> = {
   trend: TrendingDown, wrench: Wrench, clock: Clock, check: CheckCircle2, alert: TriangleAlert, info: Info,
 };
 const TONE_BG: Record<NotifTone, string> = {
-  orange: 'bg-orange-50 text-orange-500',
-  amber: 'bg-amber-50 text-amber-500',
-  red: 'bg-red-50 text-red-500',
-  green: 'bg-emerald-50 text-emerald-500',
-  blue: 'bg-blue-50 text-blue-500',
+  orange: 'bg-orange-50 dark:bg-orange-500/10 text-orange-500',
+  amber: 'bg-amber-50 dark:bg-amber-500/10 text-amber-500',
+  red: 'bg-red-50 dark:bg-red-500/10 text-red-500',
+  green: 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-500',
+  blue: 'bg-blue-50 dark:bg-blue-500/10 text-blue-500',
 };
 
 export default function Notifications() {
@@ -32,7 +32,7 @@ export default function Notifications() {
         actions={
           <button
             onClick={markAll}
-            className="rounded-lg border border-primary-200 bg-primary-50 px-3.5 py-2 text-sm font-medium text-primary-700 transition-colors hover:bg-primary-100"
+            className="rounded-full border border-primary-200 dark:border-primary-500/25 bg-primary-50 dark:bg-primary-500/10 px-3.5 py-2 text-sm font-medium text-primary-700 dark:text-primary-400 transition-colors hover:bg-primary-100 dark:hover:bg-primary-500/20"
           >
             Mark all as read
           </button>
@@ -46,8 +46,8 @@ export default function Notifications() {
             <button
               key={i}
               onClick={() => markOne(i)}
-              className={`flex w-full items-start gap-4 px-5 py-4 text-left transition-colors hover:bg-slate-50/70 ${
-                n.unread ? 'bg-primary-50/30' : ''
+              className={`flex w-full items-start gap-4 px-5 py-4 text-left transition-colors hover:bg-[var(--surface-2)] ${
+                n.unread ? 'bg-primary-50/30 dark:bg-primary-500/10' : ''
               }`}
             >
               <span className={`grid h-10 w-10 shrink-0 place-items-center rounded-full ${TONE_BG[n.tone]}`}>
@@ -55,7 +55,7 @@ export default function Notifications() {
               </span>
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
-                  <span className="font-semibold text-slate-900">{n.title}</span>
+                  <span className="font-semibold text-[var(--text-strong)]">{n.title}</span>
                   {n.unread && <span className="h-2 w-2 rounded-full bg-primary-500" />}
                 </div>
                 <p className="mt-0.5 text-sm muted">{n.body}</p>

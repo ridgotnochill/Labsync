@@ -4,14 +4,14 @@ import type { Slot } from '../data';
 import { BtnGhost, BtnPrimary, PageHeader } from '../components/ui';
 
 const CELL: Record<Slot['kind'], string> = {
-  occupied: 'bg-red-50 border-red-100',
-  reserved: 'bg-blue-50 border-blue-100',
-  available: 'bg-emerald-50 border-emerald-100',
+  occupied: 'bg-red-50 dark:bg-red-500/10 border-red-100 dark:border-red-500/25',
+  reserved: 'bg-blue-50 dark:bg-blue-500/10 border-blue-100 dark:border-blue-500/25',
+  available: 'bg-emerald-50 dark:bg-emerald-500/10 border-emerald-100 dark:border-emerald-500/25',
 };
 const TITLE_COLOR: Record<Slot['kind'], string> = {
-  occupied: 'text-red-700',
-  reserved: 'text-blue-700',
-  available: 'text-emerald-700',
+  occupied: 'text-red-700 dark:text-red-400',
+  reserved: 'text-blue-700 dark:text-blue-400',
+  available: 'text-emerald-700 dark:text-emerald-400',
 };
 
 function Legend({ color, label }: { color: string; label: string }) {
@@ -42,7 +42,7 @@ export default function LabSchedule() {
           <Legend color="bg-blue-500" label="Reserved" />
           <Legend color="bg-emerald-500" label="Available" />
         </div>
-        <span className="rounded-lg border border-[var(--border-strong)] bg-white px-3 py-1.5 text-sm font-medium text-slate-600">
+        <span className="rounded-full border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-1.5 text-sm font-medium text-[var(--text-body)]">
           Week of 01 Jul 2024
         </span>
       </div>
@@ -51,7 +51,7 @@ export default function LabSchedule() {
         <div className="overflow-x-auto">
           <table className="w-full min-w-[980px] border-collapse">
             <thead>
-              <tr className="text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
+              <tr className="text-left text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]">
                 <th className="border-b border-[var(--border)] px-4 py-3.5">Time Slot</th>
                 {scheduleDays.map((d) => (
                   <th key={d} className="border-b border-l border-[var(--border)] px-4 py-3.5">{d}</th>
@@ -61,19 +61,19 @@ export default function LabSchedule() {
             <tbody>
               {scheduleTimes.map((time, r) => (
                 <tr key={time} className="align-top">
-                  <td className="border-b border-[var(--border)] px-4 py-3 text-sm font-medium text-slate-600">{time}</td>
+                  <td className="border-b border-[var(--border)] px-4 py-3 text-sm font-medium text-[var(--text-body)]">{time}</td>
                   {schedule[r].map((slot, c) => (
                     <td key={c} className="border-b border-l border-[var(--border)] p-2">
-                      <div className={`min-h-[74px] rounded-lg border p-2.5 ${CELL[slot.kind]}`}>
+                      <div className={`min-h-[74px] rounded-xl border p-2.5 ${CELL[slot.kind]}`}>
                         {slot.kind === 'available' ? (
-                          <div className="grid h-full min-h-[54px] place-items-center text-sm font-medium text-emerald-700">
+                          <div className="grid h-full min-h-[54px] place-items-center text-sm font-medium text-emerald-700 dark:text-emerald-400">
                             Available
                           </div>
                         ) : (
                           <div className="leading-snug">
                             <div className={`text-sm font-semibold ${TITLE_COLOR[slot.kind]}`}>{slot.title}</div>
-                            <div className="mt-0.5 text-xs text-slate-500">{slot.faculty}</div>
-                            <div className="text-xs text-slate-500">{slot.lab}</div>
+                            <div className="mt-0.5 text-xs text-[var(--text-muted)]">{slot.faculty}</div>
+                            <div className="text-xs text-[var(--text-muted)]">{slot.lab}</div>
                           </div>
                         )}
                       </div>

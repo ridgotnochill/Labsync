@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import AppLayout from './components/AppLayout';
+import { LabDataProvider } from './lib/labStore';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Inventory from './pages/Inventory';
@@ -30,20 +31,22 @@ export default function App() {
   if (!authed) return <Login onLogin={login} />;
 
   return (
-    <AppLayout onLogout={logout}>
-      <Routes>
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/inventory" element={<Inventory />} />
-        <Route path="/equipment" element={<Equipment />} />
-        <Route path="/schedule" element={<LabSchedule />} />
-        <Route path="/low-stock" element={<LowStockAlerts />} />
-        <Route path="/chemical-expiry" element={<ChemicalExpiry />} />
-        <Route path="/damage-reports" element={<DamageReports />} />
-        <Route path="/notifications" element={<Notifications />} />
-        <Route path="/admin" element={<AdminPanel />} />
-        <Route path="/settings" element={<Settings />} />
-        <Route path="*" element={<Navigate to="/dashboard" replace />} />
-      </Routes>
-    </AppLayout>
+    <LabDataProvider>
+      <AppLayout onLogout={logout}>
+        <Routes>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/inventory" element={<Inventory />} />
+          <Route path="/equipment" element={<Equipment />} />
+          <Route path="/schedule" element={<LabSchedule />} />
+          <Route path="/low-stock" element={<LowStockAlerts />} />
+          <Route path="/chemical-expiry" element={<ChemicalExpiry />} />
+          <Route path="/damage-reports" element={<DamageReports />} />
+          <Route path="/notifications" element={<Notifications />} />
+          <Route path="/admin" element={<AdminPanel />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="*" element={<Navigate to="/dashboard" replace />} />
+        </Routes>
+      </AppLayout>
+    </LabDataProvider>
   );
 }
