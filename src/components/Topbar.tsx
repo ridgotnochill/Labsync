@@ -1,6 +1,7 @@
-import { Search, Bell, Sun, Moon } from 'lucide-react';
+import { Bell, Sun, Moon } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 import { useTheme } from '../theme';
+import QuickSearch from './QuickSearch';
 
 const TITLES: Record<string, string> = {
   '/dashboard': 'Dashboard',
@@ -30,13 +31,7 @@ export default function Topbar() {
       </div>
 
       <div className="ml-auto flex items-center gap-3">
-        <div className="relative hidden sm:block">
-          <Search size={16} className="faint absolute left-3 top-1/2 -translate-y-1/2" />
-          <input
-            placeholder="Quick search..."
-            className="w-64 rounded-full border border-[var(--border)] bg-[var(--bg)] py-2 pl-9 pr-3 text-sm text-[var(--text-body)] placeholder:text-[var(--text-faint)] focus:border-primary-500 focus:bg-[var(--surface)] focus:outline-none focus:ring-2 focus:ring-primary-500/20"
-          />
-        </div>
+        <QuickSearch />
         <button
           type="button"
           role="switch"

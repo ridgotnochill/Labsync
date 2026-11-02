@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import type { EquipStatus, InvStatus } from '../data';
 
 /* Status badge — outlined pill, colored by tone. */
 export type Tone = 'green' | 'amber' | 'orange' | 'red' | 'blue' | 'purple' | 'indigo' | 'gray';
@@ -23,6 +24,19 @@ export function Badge({ tone, children }: { tone: Tone; children: ReactNode }) {
     </span>
   );
 }
+
+/* Status → badge tone, shared by the tables and Quick Search. */
+export const INV_STATUS_TONE: Record<InvStatus, Tone> = {
+  Available: 'green',
+  'Low Stock': 'orange',
+  'Out of Stock': 'red',
+};
+
+export const EQUIP_STATUS_TONE: Record<EquipStatus, Tone> = {
+  Working: 'green',
+  'Under Maintenance': 'red',
+  'Calibration Due': 'amber',
+};
 
 /* Colored category text (Inventory table). */
 export const CATEGORY_TONE: Record<string, string> = {

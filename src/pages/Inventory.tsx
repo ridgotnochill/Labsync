@@ -1,17 +1,9 @@
 import { useMemo, useState } from 'react';
 import { Search, Download, Plus, Loader2 } from 'lucide-react';
-import type { InvStatus } from '../data';
-import { Badge, BtnGhost, BtnPrimary, CATEGORY_TONE, PageHeader, Tabs } from '../components/ui';
-import type { Tone } from '../components/ui';
+import { Badge, BtnGhost, BtnPrimary, CATEGORY_TONE, INV_STATUS_TONE, PageHeader, Tabs } from '../components/ui';
 import { UploadButton } from '../components/UploadModal';
 import { useLabData } from '../lib/labStore';
 import { summarize } from '../lib/summary';
-
-const STATUS_TONE: Record<InvStatus, Tone> = {
-  Available: 'green',
-  'Low Stock': 'orange',
-  'Out of Stock': 'red',
-};
 
 const FILTERS = ['All', 'Chemical', 'Glassware', 'Consumables', 'Equipment'];
 
@@ -111,7 +103,7 @@ export default function Inventory() {
                   <td className="px-5 py-4 muted">{it.unit}</td>
                   <td className="px-5 py-4 muted">{it.location}</td>
                   <td className="px-5 py-4 tnum muted">{it.expiry ?? '—'}</td>
-                  <td className="px-5 py-4"><Badge tone={STATUS_TONE[it.status]}>{it.status}</Badge></td>
+                  <td className="px-5 py-4"><Badge tone={INV_STATUS_TONE[it.status]}>{it.status}</Badge></td>
                 </tr>
               ))}
               {loading && (

@@ -1,16 +1,9 @@
 import { useMemo, useState } from 'react';
 import { Download, Plus } from 'lucide-react';
 import type { EquipStatus } from '../data';
-import { Badge, BtnGhost, BtnPrimary, PageHeader, Tabs } from '../components/ui';
-import type { Tone } from '../components/ui';
+import { Badge, BtnGhost, BtnPrimary, EQUIP_STATUS_TONE, PageHeader, Tabs } from '../components/ui';
 import { UploadButton } from '../components/UploadModal';
 import { useLabData } from '../lib/labStore';
-
-const STATUS_TONE: Record<EquipStatus, Tone> = {
-  Working: 'green',
-  'Under Maintenance': 'red',
-  'Calibration Due': 'amber',
-};
 
 const SUMMARY: { status: EquipStatus; dot: string; ring: string }[] = [
   { status: 'Working', dot: 'bg-emerald-500', ring: 'border-emerald-200 dark:border-emerald-500/25 bg-emerald-50/50 dark:bg-emerald-500/10' },
@@ -86,7 +79,7 @@ export default function Equipment() {
                   </td>
                   <td className="px-5 py-4 tnum muted">{e.serial}</td>
                   <td className="px-5 py-4 text-[var(--text-body)]">{e.lab}</td>
-                  <td className="px-5 py-4"><Badge tone={STATUS_TONE[e.status]}>{e.status}</Badge></td>
+                  <td className="px-5 py-4"><Badge tone={EQUIP_STATUS_TONE[e.status]}>{e.status}</Badge></td>
                   <td className="px-5 py-4 tnum muted">{e.calibrationDue}</td>
                   <td className="px-5 py-4 muted">{e.lastServiced}</td>
                   <td className="px-5 py-4 muted">{e.nextService}</td>
