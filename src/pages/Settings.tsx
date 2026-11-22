@@ -37,12 +37,12 @@ export default function Settings() {
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-[240px_1fr]">
         {/* Sub-nav */}
-        <div className="card h-max p-2">
+        <div className="card no-scrollbar flex h-max gap-1 overflow-x-auto p-2 lg:block lg:space-y-0">
           {SECTIONS.map((s) => (
             <button
               key={s.key}
               onClick={() => setActive(s.key)}
-              className={`flex w-full items-center gap-3 rounded-full px-3 py-2.5 text-sm font-medium transition-colors ${
+              className={`flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full px-3 py-2.5 text-sm font-medium transition-colors lg:w-full lg:gap-3 ${
                 active === s.key
                   ? 'bg-primary-50 dark:bg-primary-500/10 text-primary-700 dark:text-primary-400'
                   : 'text-[var(--text-body)] hover:bg-[var(--surface-2)]'
@@ -57,7 +57,7 @@ export default function Settings() {
         {active === 'backup' ? (
           <DataPanel />
         ) : (
-          <div className="card p-6">
+          <div className="card p-5 sm:p-6">
             <h3 className="display text-lg font-bold text-[var(--text-strong)]">Profile Information</h3>
 
             <div className="mt-5 flex flex-wrap items-center gap-4 rounded-2xl border border-[var(--border)] bg-[var(--surface-2)] p-4">
@@ -112,7 +112,7 @@ function DataPanel() {
   }
 
   return (
-    <div className="card p-6">
+    <div className="card p-5 sm:p-6">
       <h3 className="display text-lg font-bold text-[var(--text-strong)]">Data &amp; Backup</h3>
       <p className="mt-1 text-sm muted">
         {source === 'supabase' ? 'Stored in the shared LabPilot database.' : 'Stored in this browser only (database not connected).'}

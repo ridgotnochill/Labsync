@@ -108,17 +108,17 @@ export default function UploadModal({ onClose }: { onClose: () => void }) {
 
   return createPortal(
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-[#0b0a22]/60 p-4 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-[#0b0a22]/60 backdrop-blur-sm sm:p-4"
       onMouseDown={(e) => e.target === e.currentTarget && !busy && onClose()}
     >
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby="upload-title"
-        className="card fade-rise flex max-h-[90vh] w-full max-w-6xl flex-col overflow-hidden shadow-2xl"
+        className="card fade-rise flex h-dvh w-full max-w-6xl flex-col overflow-hidden rounded-none border-0 shadow-2xl sm:h-auto sm:max-h-[90vh] sm:rounded-[24px] sm:border"
       >
         {/* Header */}
-        <div className="flex items-start justify-between gap-4 border-b border-[var(--border)] px-6 py-5">
+        <div className="flex items-start justify-between gap-4 border-b border-[var(--border)] px-4 py-4 sm:px-6 sm:py-5">
           <div>
             <h2 id="upload-title" className="text-xl font-extrabold text-[var(--text-strong)]">Upload stock update</h2>
             <p className="mt-1 text-sm muted">
@@ -136,7 +136,7 @@ export default function UploadModal({ onClose }: { onClose: () => void }) {
         </div>
 
         {/* Body */}
-        <div className="flex-1 overflow-y-auto px-6 py-5">
+        <div className="flex-1 overflow-y-auto overscroll-contain px-4 py-4 sm:px-6 sm:py-5">
           {step.name === 'pick' && (
             <>
               <label
@@ -148,7 +148,7 @@ export default function UploadModal({ onClose }: { onClose: () => void }) {
                   const f = e.dataTransfer.files[0];
                   if (f) handleFile(f);
                 }}
-                className={`flex cursor-pointer flex-col items-center justify-center rounded-3xl border-2 border-dashed px-6 py-12 text-center transition-colors ${
+                className={`flex cursor-pointer flex-col items-center justify-center rounded-3xl border-2 border-dashed px-4 py-10 text-center sm:px-6 sm:py-12 transition-colors ${
                   dragging
                     ? 'border-primary-500 bg-primary-50 dark:bg-primary-500/10'
                     : 'border-[var(--border-strong)] bg-[var(--surface-2)] hover:border-primary-400'
@@ -157,8 +157,10 @@ export default function UploadModal({ onClose }: { onClose: () => void }) {
                 <span className="grid h-16 w-16 place-items-center rounded-full bg-gradient-to-br from-primary-400 to-primary-700 text-white shadow-lg shadow-primary-600/30">
                   <UploadCloud size={28} />
                 </span>
-                <span className="display mt-5 text-lg font-bold text-[var(--text-strong)]">Drop your file here</span>
-                <span className="mt-1 text-sm muted">
+                <span className="display mt-5 text-lg font-bold text-[var(--text-strong)] sm:hidden">Tap to choose a file</span>
+                <span className="mt-1 text-sm muted sm:hidden">or take a photo of your stock list</span>
+                <span className="display mt-5 hidden text-lg font-bold text-[var(--text-strong)] sm:block">Drop your file here</span>
+                <span className="mt-1 hidden text-sm muted sm:block">
                   or <span className="font-semibold text-primary-600 underline underline-offset-2 dark:text-primary-400">browse</span> to choose one
                 </span>
                 <div className="mt-5 flex flex-wrap justify-center gap-2">
@@ -311,7 +313,7 @@ export default function UploadModal({ onClose }: { onClose: () => void }) {
 
         {/* Footer */}
         {(step.name === 'review' || step.name === 'done' || step.name === 'error') && (
-          <div className="flex flex-wrap items-center justify-between gap-3 border-t border-[var(--border)] px-6 py-4">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-t border-[var(--border)] px-4 py-3 sm:px-6 sm:py-4">
             <BtnGhost onClick={() => { setRows([]); setStep({ name: 'pick' }); }}>
               <ArrowLeft size={16} /> {step.name === 'done' ? 'Upload another' : 'Choose another file'}
             </BtnGhost>

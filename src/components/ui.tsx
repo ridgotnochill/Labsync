@@ -57,9 +57,9 @@ export function PageHeader({
   actions?: ReactNode;
 }) {
   return (
-    <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
-      <div>
-        <h1 className="text-3xl font-extrabold text-[var(--text-strong)]">{title}</h1>
+    <div className="mb-5 flex flex-wrap items-start justify-between gap-4 sm:mb-6">
+      <div className="min-w-0">
+        <h1 className="text-2xl font-extrabold break-words text-[var(--text-strong)] sm:text-3xl">{title}</h1>
         {subtitle && <p className="mt-1 text-sm muted">{subtitle}</p>}
       </div>
       {actions && <div className="flex flex-wrap items-center gap-2.5">{actions}</div>}
@@ -114,12 +114,12 @@ export function Tabs({
   onChange: (t: string) => void;
 }) {
   return (
-    <div className="flex flex-wrap items-center gap-1 rounded-full border border-[var(--border)] bg-[var(--surface)] p-1">
+    <div className="no-scrollbar inline-flex max-w-full items-center gap-1 overflow-x-auto rounded-full border border-[var(--border)] bg-[var(--surface)] p-1">
       {tabs.map((t) => (
         <button
           key={t}
           onClick={() => onChange(t)}
-          className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+          className={`shrink-0 whitespace-nowrap rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
             active === t
               ? 'bg-primary-600 text-white shadow-sm'
               : 'text-[var(--text-body)] hover:bg-[var(--surface-3)]'

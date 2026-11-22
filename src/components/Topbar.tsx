@@ -1,4 +1,4 @@
-import { Bell, Sun, Moon } from 'lucide-react';
+import { Bell, Sun, Moon, Menu } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 import { useTheme } from '../theme';
 import QuickSearch from './QuickSearch';
@@ -16,21 +16,28 @@ const TITLES: Record<string, string> = {
   '/settings': 'Settings',
 };
 
-export default function Topbar() {
+export default function Topbar({ onMenu }: { onMenu: () => void }) {
   const { pathname } = useLocation();
   const title = TITLES[pathname] ?? 'Dashboard';
   const [theme, toggleTheme] = useTheme();
   const dark = theme === 'dark';
 
   return (
-    <header className="sticky top-0 z-30 flex items-center gap-4 border-b border-[var(--border)] bg-[var(--surface)]/85 px-6 py-3.5 backdrop-blur-md">
-      <div className="flex items-center gap-2 text-sm">
-        <span className="muted">LabPilot</span>
-        <span className="faint">›</span>
-        <span className="display font-bold text-[var(--text-strong)]">{title}</span>
+    <header className="sticky top-0 z-30 flex items-center gap-2 border-b border-[var(--border)] bg-[var(--surface)]/85 px-3 py-3 backdrop-blur-md sm:gap-4 sm:px-6 sm:py-3.5">
+      <button
+        onClick={onMenu}
+        aria-label="Open menu"
+        className="muted grid h-9 w-9 shrink-0 place-items-center rounded-full transition-colors hover:bg-[var(--surface-3)] lg:hidden"
+      >
+        <Menu size={20} />
+      </button>
+      <div className="flex min-w-0 items-center gap-2 text-sm">
+        <span className="muted hidden sm:inline">LabPilot</span>
+        <span className="faint hidden sm:inline">›</span>
+        <span className="display truncate font-bold text-[var(--text-strong)]">{title}</span>
       </div>
 
-      <div className="ml-auto flex items-center gap-3">
+      <div className="ml-auto flex shrink-0 items-center gap-2 sm:gap-3">
         <QuickSearch />
         <button
           type="button"
@@ -55,7 +62,7 @@ export default function Topbar() {
           <Bell size={18} />
           <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-ember ring-2 ring-[var(--surface)]" />
         </button>
-        <span className="grid h-9 w-9 place-items-center rounded-full bg-ember text-sm font-semibold text-white">
+        <span className="hidden h-9 w-9 place-items-center rounded-full bg-ember text-sm font-semibold text-white sm:grid">
           A
         </span>
       </div>

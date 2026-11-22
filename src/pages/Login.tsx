@@ -13,7 +13,7 @@ export default function Login({ onLogin }: { onLogin: () => void }) {
   const [role, setRole] = useState('admin');
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[var(--rail)] p-4">
+    <div className="relative flex min-h-dvh items-center justify-center overflow-hidden bg-[var(--rail)] p-4">
       {/* Ambient gradient blobs */}
       <div className="pointer-events-none absolute -left-40 -top-40 h-96 w-96 rounded-full bg-primary-600/30 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-40 -right-32 h-96 w-96 rounded-full bg-indigo-500/20 blur-3xl" />

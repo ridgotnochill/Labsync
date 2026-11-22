@@ -36,9 +36,9 @@ export default function Equipment() {
         }
       />
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-3 sm:gap-4">
         {SUMMARY.map((s) => (
-          <div key={s.status} className={`flex items-center justify-between rounded-2xl border px-5 py-4 ${s.ring}`}>
+          <div key={s.status} className={`flex items-center justify-between rounded-2xl border px-4 py-3 sm:px-5 sm:py-4 ${s.ring}`}>
             <span className="flex items-center gap-2 text-sm font-medium text-[var(--text-body)]">
               <span className={`h-2.5 w-2.5 rounded-full ${s.dot}`} /> {s.status}
             </span>
@@ -52,7 +52,47 @@ export default function Equipment() {
       </div>
 
       <div className="card mt-5 overflow-hidden">
-        <div className="overflow-x-auto">
+        {/* Phones: one card per instrument */}
+        <ul className="divide-y divide-[var(--border)] md:hidden">
+          {rows.map((e) => {
+            const isRecent = recent.has(e.name.trim().toLowerCase());
+            return (
+              <li key={e.id} className={`px-4 py-3.5 ${isRecent ? 'bg-primary-50/60 dark:bg-primary-500/10' : ''}`}>
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="break-words font-semibold text-[var(--text-strong)]">{e.name}</p>
+                    <p className="mt-0.5 text-xs muted">
+                      {[e.serial && `S/N ${e.serial}`, e.lab].filter(Boolean).join(' · ') || '—'}
+                    </p>
+                  </div>
+                  <Badge tone={EQUIP_STATUS_TONE[e.status]}>{e.status}</Badge>
+                </div>
+                <dl className="mt-2 grid grid-cols-3 gap-2 text-xs">
+                  {[
+                    ['Calibration', e.calibrationDue],
+                    ['Last service', e.lastServiced],
+                    ['Next service', e.nextService],
+                  ].map(([label, value]) => (
+                    <div key={label} className="min-w-0">
+                      <dt className="faint">{label}</dt>
+                      <dd className="truncate tnum text-[var(--text-body)]">{value || '—'}</dd>
+                    </div>
+                  ))}
+                </dl>
+                {isRecent && <div className="mt-2"><Badge tone="purple">Just updated</Badge></div>}
+              </li>
+            );
+          })}
+        </ul>
+        {equipment.length === 0 && (
+          <div className="px-4 py-12 text-center md:hidden">
+            <p className="display font-bold text-[var(--text-strong)]">No equipment yet</p>
+            <p className="mt-1 text-sm muted">Upload a list with a Serial No. column and instruments will appear here.</p>
+            <div className="mt-4 inline-block"><UploadButton /></div>
+          </div>
+        )}
+
+        <div className="hidden overflow-x-auto md:block">
           <table className="w-full min-w-[960px] text-sm">
             <thead>
               <tr className="border-b border-[var(--border)] text-left text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]">

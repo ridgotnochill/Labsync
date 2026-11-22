@@ -1,7 +1,8 @@
+import { useState } from 'react';
 import { Download, Plus } from 'lucide-react';
 import { schedule, scheduleDays, scheduleTimes } from '../data';
 import type { Slot } from '../data';
-import { BtnGhost, BtnPrimary, PageHeader } from '../components/ui';
+import { BtnGhost, BtnPrimary, PageHeader, Tabs } from '../components/ui';
 
 const CELL: Record<Slot['kind'], string> = {
   occupied: 'bg-red-50 dark:bg-red-500/10 border-red-100 dark:border-red-500/25',
@@ -23,6 +24,9 @@ function Legend({ color, label }: { color: string; label: string }) {
 }
 
 export default function LabSchedule() {
+  const [day, setDay] = useState(scheduleDays[0]);
+  const dayIndex = scheduleDays.indexOf(day);
+
   return (
     <div>
       <PageHeader
@@ -37,7 +41,7 @@ export default function LabSchedule() {
       />
 
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-4">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
           <Legend color="bg-red-500" label="Occupied" />
           <Legend color="bg-blue-500" label="Reserved" />
           <Legend color="bg-emerald-500" label="Available" />
@@ -47,7 +51,34 @@ export default function LabSchedule() {
         </span>
       </div>
 
-      <div className="card overflow-hidden">
+      {/* Phones: pick a day, see its sessions as a list */}
+      <div className="md:hidden">
+        <Tabs tabs={scheduleDays} active={day} onChange={setDay} />
+        <div className="card mt-4 divide-y divide-[var(--border)] overflow-hidden">
+          {scheduleTimes.map((time, r) => {
+            const slot = schedule[r][dayIndex];
+            return (
+              <div key={time} className="flex gap-3 p-3">
+                <div className="w-20 shrink-0 pt-2.5 text-xs font-medium text-[var(--text-body)]">{time}</div>
+                <div className={`min-w-0 flex-1 rounded-xl border p-2.5 ${CELL[slot.kind]}`}>
+                  {slot.kind === 'available' ? (
+                    <div className="text-sm font-medium text-emerald-700 dark:text-emerald-400">Available</div>
+                  ) : (
+                    <div className="leading-snug">
+                      <div className={`text-sm font-semibold ${TITLE_COLOR[slot.kind]}`}>{slot.title}</div>
+                      <div className="mt-0.5 text-xs text-[var(--text-muted)]">
+                        {[slot.faculty, slot.lab].filter(Boolean).join(' · ')}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="card hidden overflow-hidden md:block">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[980px] border-collapse">
             <thead>

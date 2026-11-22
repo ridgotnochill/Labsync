@@ -38,9 +38,9 @@ export default function ChemicalExpiry() {
         actions={<BtnGhost><Download size={16} /> Export Report</BtnGhost>}
       />
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-3 sm:gap-4">
         {SUMMARY.map((s) => (
-          <div key={s.label} className={`flex items-center justify-between rounded-2xl border px-5 py-4 ${s.ring}`}>
+          <div key={s.label} className={`flex items-center justify-between rounded-2xl border px-4 py-3 sm:px-5 sm:py-4 ${s.ring}`}>
             <span className="flex items-center gap-2 text-sm font-medium text-[var(--text-body)]">
               <span className={`h-2.5 w-2.5 rounded-full ${s.dot}`} /> {s.label}
             </span>
@@ -60,7 +60,26 @@ export default function ChemicalExpiry() {
         </div>
       ) : (
         <div className="card mt-5 overflow-hidden">
-          <div className="overflow-x-auto">
+          {/* Phones: one card per item */}
+          <ul className="divide-y divide-[var(--border)] md:hidden">
+            {withExpiry.map((c) => (
+              <li key={c.id} className="flex items-start gap-3 px-4 py-3.5">
+                <div className="min-w-0 flex-1">
+                  <p className="break-words font-semibold text-[var(--text-strong)]">{c.name}</p>
+                  <p className="mt-0.5 text-xs muted">
+                    {c.qty}{c.unit && ` × ${c.unit}`}{c.location && ` · ${c.location}`}
+                  </p>
+                  <p className="mt-0.5 text-xs faint">Expiry <span className="tnum">{c.expiry}</span></p>
+                </div>
+                <div className="flex shrink-0 flex-col items-end gap-1.5">
+                  <Badge tone={STATUS_TONE[c.expiryStatus]}>{c.days < 0 ? 'Expired' : c.expiryStatus}</Badge>
+                  <span className={`text-xs font-semibold tnum ${DAYS_COLOR[c.expiryStatus]}`}>{daysLabel(c.days)}</span>
+                </div>
+              </li>
+            ))}
+          </ul>
+
+          <div className="hidden overflow-x-auto md:block">
             <table className="w-full min-w-[880px] text-sm">
               <thead>
                 <tr className="border-b border-[var(--border)] text-left text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]">

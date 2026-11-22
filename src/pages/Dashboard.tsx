@@ -70,7 +70,7 @@ export default function Dashboard() {
         />
         <div className="pointer-events-none absolute -bottom-24 left-1/3 h-64 w-64 rounded-full bg-primary-300/30 blur-3xl" />
 
-        <div className="relative px-7 pt-8 pb-7 sm:px-10 sm:pt-10">
+        <div className="relative px-6 pt-7 pb-6 sm:px-10 sm:pt-10 sm:pb-7">
           <p className="text-sm text-white/85">Monday, 01 July 2024</p>
           <h1 className="mt-3 max-w-xl text-4xl leading-[0.95] font-extrabold sm:text-5xl">
             Good morning,
@@ -93,7 +93,7 @@ export default function Dashboard() {
         {/* Feature strip */}
         <div className="relative grid grid-cols-1 gap-px border-t border-white/10 bg-white/10 sm:grid-cols-3">
           {highlights.map((h) => (
-            <div key={h.title} className="flex items-start gap-3 bg-[#14133a]/55 px-7 py-5 backdrop-blur-sm sm:px-8">
+            <div key={h.title} className="flex items-start gap-3 bg-[#14133a]/55 px-6 py-4 backdrop-blur-sm sm:px-8 sm:py-5">
               <span className={`grid h-10 w-10 shrink-0 place-items-center rounded-full ${h.tone}`}>
                 <h.icon size={18} />
               </span>
@@ -107,16 +107,16 @@ export default function Dashboard() {
       </section>
 
       {/* Stat cards */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
         {stats.map((s) => (
-          <div key={s.label} className="card p-5 transition-shadow hover:shadow-md">
-            <div className="flex items-start justify-between">
-              <span className={`grid h-11 w-11 place-items-center rounded-full ${s.iconTone}`}>
+          <div key={s.label} className="card p-4 transition-shadow hover:shadow-md sm:p-5">
+            <div className="flex items-start justify-between gap-2">
+              <span className={`grid h-10 w-10 shrink-0 place-items-center rounded-full sm:h-11 sm:w-11 ${s.iconTone}`}>
                 <s.icon size={20} />
               </span>
               {s.badge && <Badge tone={s.badge.tone}>{s.badge.text}</Badge>}
             </div>
-            <div className="display mt-4 text-4xl font-extrabold tnum text-[var(--text-strong)]">{s.value}</div>
+            <div className="display mt-3 text-3xl font-extrabold tnum text-[var(--text-strong)] sm:mt-4 sm:text-4xl">{s.value}</div>
             <div className="mt-1 text-sm font-medium text-[var(--text-body)]">{s.label}</div>
             <div className="text-xs faint">{s.sub}</div>
           </div>
@@ -125,7 +125,7 @@ export default function Dashboard() {
 
       {/* Chart + right column */}
       <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
-        <div className="card p-6 lg:col-span-2">
+        <div className="card p-5 sm:p-6 lg:col-span-2">
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div>
               <h3 className="display font-bold text-[var(--text-strong)]">Lab Usage &amp; Inventory Trend</h3>

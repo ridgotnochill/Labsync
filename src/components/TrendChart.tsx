@@ -1,8 +1,20 @@
+import { useEffect, useRef, useState } from 'react';
 import { trend } from '../data';
 
 // Lightweight SVG area chart: two series (sessions, items) over 6 months.
+// Drawn at the container's real width so labels stay readable on phones
+// instead of the whole chart (text included) being scaled down.
 export default function TrendChart() {
-  const W = 620, H = 240, padL = 36, padR = 12, padT = 12, padB = 28;
+  const ref = useRef<HTMLDivElement>(null);
+  const [W, setW] = useState(620);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const ro = new ResizeObserver(([entry]) => setW(Math.max(260, Math.round(entry.contentRect.width))));
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+  const H = W < 480 ? 200 : 240, padL = 36, padR = 12, padT = 12, padB = 28;
   const max = 400;
   const n = trend.months.length;
   const x = (i: number) => padL + (i * (W - padL - padR)) / (n - 1);
@@ -16,7 +28,8 @@ export default function TrendChart() {
   const yTicks = [0, 100, 200, 300, 400];
 
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} className="w-full" role="img" aria-label="Lab usage and inventory trend">
+    <div ref={ref}>
+    <svg viewBox={`0 0 ${W} ${H}`} className="block w-full" role="img" aria-label="Lab usage and inventory trend">
       <defs>
         <linearGradient id="gSessions" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor="#7c5ce6" stopOpacity="0.28" />
@@ -57,5 +70,6 @@ export default function TrendChart() {
         </text>
       ))}
     </svg>
+    </div>
   );
 }

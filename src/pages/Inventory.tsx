@@ -30,6 +30,19 @@ export default function Inventory() {
     });
   }, [inventory, tab, q]);
 
+  // Loading / empty / no-match message, shown by both the phone list and the table.
+  const message = loading ? (
+    <span className="muted"><Loader2 size={18} className="mr-2 inline animate-spin" /> Loading inventory…</span>
+  ) : inventory.length === 0 ? (
+    <>
+      <p className="display font-bold text-[var(--text-strong)]">No inventory yet</p>
+      <p className="mt-1 text-sm muted">Upload your stock list (Excel, CSV or PDF) to fill this table.</p>
+      <div className="mt-4 inline-block"><UploadButton /></div>
+    </>
+  ) : rows.length === 0 ? (
+    <span className="muted">No items match your filters.</span>
+  ) : null;
+
   return (
     <div>
       <PageHeader
@@ -71,7 +84,34 @@ export default function Inventory() {
       )}
 
       <div className="card mt-5 overflow-hidden">
-        <div className="overflow-x-auto">
+        {/* Phones: one card per item */}
+        <ul className="divide-y divide-[var(--border)] md:hidden">
+          {rows.map((it) => {
+            const isRecent = recent.has(it.name.trim().toLowerCase());
+            return (
+              <li key={it.id} className={`flex items-start gap-3 px-4 py-3.5 ${isRecent ? 'bg-primary-50/60 dark:bg-primary-500/10' : ''}`}>
+                <div className="min-w-0 flex-1">
+                  <p className="break-words font-semibold text-[var(--text-strong)]">{it.name}</p>
+                  <p className="mt-0.5 text-xs muted">
+                    <span className={`font-medium ${CATEGORY_TONE[it.category]}`}>{it.category}</span>
+                    {it.location && ` · ${it.location}`}
+                  </p>
+                  {it.expiry && <p className="mt-0.5 text-xs faint">Expires <span className="tnum">{it.expiry}</span></p>}
+                  {isRecent && <div className="mt-1.5"><Badge tone="purple">Just updated</Badge></div>}
+                </div>
+                <div className="flex shrink-0 flex-col items-end gap-1.5">
+                  <p className="text-right font-bold tnum text-[var(--text-strong)]">
+                    {it.qty} <span className="text-xs font-normal muted">{it.unit}</span>
+                  </p>
+                  <Badge tone={INV_STATUS_TONE[it.status]}>{it.status}</Badge>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+        {message && <div className="px-4 py-12 text-center md:hidden">{message}</div>}
+
+        <div className="hidden overflow-x-auto md:block">
           <table className="w-full min-w-[880px] text-sm">
             <thead>
               <tr className="border-b border-[var(--border)] text-left text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]">
@@ -106,25 +146,9 @@ export default function Inventory() {
                   <td className="px-5 py-4"><Badge tone={INV_STATUS_TONE[it.status]}>{it.status}</Badge></td>
                 </tr>
               ))}
-              {loading && (
+              {message && (
                 <tr>
-                  <td colSpan={7} className="px-5 py-10 text-center muted">
-                    <Loader2 size={18} className="mr-2 inline animate-spin" /> Loading inventory…
-                  </td>
-                </tr>
-              )}
-              {!loading && inventory.length === 0 && (
-                <tr>
-                  <td colSpan={7} className="px-5 py-14 text-center">
-                    <p className="display font-bold text-[var(--text-strong)]">No inventory yet</p>
-                    <p className="mt-1 text-sm muted">Upload your stock list (Excel, CSV or PDF) to fill this table.</p>
-                    <div className="mt-4 inline-block"><UploadButton /></div>
-                  </td>
-                </tr>
-              )}
-              {!loading && inventory.length > 0 && rows.length === 0 && (
-                <tr>
-                  <td colSpan={7} className="px-5 py-10 text-center muted">No items match your filters.</td>
+                  <td colSpan={7} className="px-5 py-12 text-center">{message}</td>
                 </tr>
               )}
             </tbody>
