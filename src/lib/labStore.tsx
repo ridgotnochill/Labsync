@@ -209,9 +209,10 @@ async function writeRemote(plan: UploadPlan, fileName: string, result: UploadRes
   ].filter(Boolean) as PromiseLike<{ error: unknown }>[];
   for (const { error } of await Promise.all(ops)) if (error) throw error;
 
+  const { data: auth } = await db.auth.getUser();
   await db.from('uploads').insert({
     file_name: fileName,
-    uploaded_by: profile.fullName,
+    uploaded_by: auth.user?.email ?? profile.fullName,
     items_added: result.added,
     items_updated: result.updated,
   });

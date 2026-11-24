@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import AppLayout from './components/AppLayout';
 import { LabDataProvider } from './lib/labStore';
+import { supabase } from './lib/supabase';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Inventory from './pages/Inventory';
@@ -14,20 +15,37 @@ import Notifications from './pages/Notifications';
 import AdminPanel from './pages/AdminPanel';
 import Settings from './pages/Settings';
 
+// Only used without Supabase (local demo mode); with Supabase the session comes from Supabase Auth.
 const KEY = 'labpilot.authed';
 
 export default function App() {
-  const [authed, setAuthed] = useState(() => localStorage.getItem(KEY) === '1');
+  // null = still checking for a saved Supabase session.
+  const [authed, setAuthed] = useState<boolean | null>(() =>
+    supabase ? null : localStorage.getItem(KEY) === '1'
+  );
+
+  useEffect(() => {
+    if (!supabase) return;
+    supabase.auth.getSession().then(({ data }) => setAuthed(!!data.session));
+    const { data } = supabase.auth.onAuthStateChange((_event, session) => setAuthed(!!session));
+    return () => data.subscription.unsubscribe();
+  }, []);
 
   const login = () => {
+    if (supabase) return; // onAuthStateChange flips `authed`
     localStorage.setItem(KEY, '1');
     setAuthed(true);
   };
   const logout = () => {
+    if (supabase) {
+      supabase.auth.signOut();
+      return;
+    }
     localStorage.removeItem(KEY);
     setAuthed(false);
   };
 
+  if (authed === null) return <div className="min-h-dvh bg-[var(--rail)]" />;
   if (!authed) return <Login onLogin={login} />;
 
   return (

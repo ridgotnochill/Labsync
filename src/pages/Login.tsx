@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { FlaskConical, GraduationCap, Beaker, UserCog, Shield } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
+import { supabase } from '../lib/supabase';
 
 const ROLES: { key: string; label: string; icon: LucideIcon; desc: string }[] = [
   { key: 'admin', label: 'Admin', icon: Shield, desc: 'Full system access' },
@@ -11,6 +12,23 @@ const ROLES: { key: string; label: string; icon: LucideIcon; desc: string }[] = 
 
 export default function Login({ onLogin }: { onLogin: () => void }) {
   const [role, setRole] = useState('admin');
+  const [email, setEmail] = useState(supabase ? '' : 'admin@example.com');
+  const [password, setPassword] = useState(supabase ? '' : 'password');
+  const [error, setError] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
+
+  const submit = async () => {
+    if (!supabase) return onLogin(); // local demo mode: no real accounts
+    setBusy(true);
+    setError(null);
+    const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
+    setBusy(false);
+    if (error) {
+      setError(error.message === 'Invalid login credentials' ? 'Wrong email or password.' : error.message);
+      return;
+    }
+    onLogin();
+  };
 
   return (
     <div className="relative flex min-h-dvh items-center justify-center overflow-hidden bg-[var(--rail)] p-4">
@@ -78,13 +96,17 @@ export default function Login({ onLogin }: { onLogin: () => void }) {
             className="mt-5 space-y-4"
             onSubmit={(e) => {
               e.preventDefault();
-              onLogin();
+              submit();
             }}
           >
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-slate-300">Email / Employee ID</label>
+              <label className="mb-1.5 block text-sm font-medium text-slate-300">Email</label>
               <input
-                defaultValue="admin@example.com"
+                type="email"
+                required
+                autoComplete="username"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="w-full rounded-full border border-white/10 bg-white/[0.06] px-5 py-2.5 text-sm text-white placeholder:text-slate-500 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/30"
               />
             </div>
@@ -92,15 +114,24 @@ export default function Login({ onLogin }: { onLogin: () => void }) {
               <label className="mb-1.5 block text-sm font-medium text-slate-300">Password</label>
               <input
                 type="password"
-                defaultValue="password"
+                required
+                autoComplete="current-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 className="w-full rounded-full border border-white/10 bg-white/[0.06] px-5 py-2.5 text-sm text-white placeholder:text-slate-500 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/30"
               />
             </div>
+            {error && (
+              <p role="alert" className="rounded-2xl border border-red-500/30 bg-red-500/10 px-4 py-2.5 text-sm text-red-300">
+                {error}
+              </p>
+            )}
             <button
               type="submit"
-              className="w-full rounded-full bg-zest py-3 text-xs font-bold uppercase tracking-wide text-[#15133d] shadow-lg shadow-zest/20 transition-colors hover:bg-zest-hover"
+              disabled={busy}
+              className="w-full rounded-full bg-zest disabled:opacity-60 py-3 text-xs font-bold uppercase tracking-wide text-[#15133d] shadow-lg shadow-zest/20 transition-colors hover:bg-zest-hover"
             >
-              Sign In
+              {busy ? 'Signing in…' : 'Sign In'}
             </button>
           </form>
         </div>

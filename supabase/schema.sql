@@ -38,34 +38,29 @@ create table if not exists public.uploads (
 );
 
 -- ---------------------------------------------------------------------------
--- Row Level Security
--- LabPilot's login screen is not real authentication yet, so the site talks to
--- Supabase with the public "anon" key. The policies below let anyone who can
--- open the site read, write AND delete these tables. That is fine for a demo, but
--- before real use, switch to Supabase Auth and change `to anon, authenticated`
--- to `to authenticated` on the write policies.
+-- Access: only signed-in users (Supabase Auth) can read or change data.
+-- The public "anon" key alone gets nothing. Accounts are created by an admin in
+-- the dashboard (Authentication → Users → Add user); public sign-up is turned off.
 -- ---------------------------------------------------------------------------
 -- Newer Supabase projects don't grant table access to the API roles by default.
-grant select, insert, update, delete on public.inventory_items, public.equipment, public.uploads to anon, authenticated;
+grant select, insert, update, delete on public.inventory_items, public.equipment, public.uploads to authenticated;
 
 alter table public.inventory_items enable row level security;
 alter table public.equipment       enable row level security;
 alter table public.uploads         enable row level security;
 
-create policy "read inventory"   on public.inventory_items for select to anon, authenticated using (true);
-create policy "insert inventory" on public.inventory_items for insert to anon, authenticated with check (true);
-create policy "update inventory" on public.inventory_items for update to anon, authenticated using (true) with check (true);
+create policy "signed-in users read inventory"   on public.inventory_items for select to authenticated using (true);
+create policy "signed-in users insert inventory" on public.inventory_items for insert to authenticated with check (true);
+create policy "signed-in users update inventory" on public.inventory_items for update to authenticated using (true) with check (true);
+create policy "signed-in users delete inventory" on public.inventory_items for delete to authenticated using (true);
 
-create policy "read equipment"   on public.equipment for select to anon, authenticated using (true);
-create policy "insert equipment" on public.equipment for insert to anon, authenticated with check (true);
-create policy "update equipment" on public.equipment for update to anon, authenticated using (true) with check (true);
+create policy "signed-in users read equipment"   on public.equipment for select to authenticated using (true);
+create policy "signed-in users insert equipment" on public.equipment for insert to authenticated with check (true);
+create policy "signed-in users update equipment" on public.equipment for update to authenticated using (true) with check (true);
+create policy "signed-in users delete equipment" on public.equipment for delete to authenticated using (true);
 
-create policy "read uploads"   on public.uploads for select to anon, authenticated using (true);
-create policy "insert uploads" on public.uploads for insert to anon, authenticated with check (true);
-
--- Used by Settings → Data & Backup → "Clear all data".
-create policy "delete inventory" on public.inventory_items for delete to anon, authenticated using (true);
-create policy "delete equipment" on public.equipment       for delete to anon, authenticated using (true);
-create policy "delete uploads"   on public.uploads         for delete to anon, authenticated using (true);
+create policy "signed-in users read uploads"   on public.uploads for select to authenticated using (true);
+create policy "signed-in users insert uploads" on public.uploads for insert to authenticated with check (true);
+create policy "signed-in users delete uploads" on public.uploads for delete to authenticated using (true);
 
 -- No seed data: the tables start empty and are filled through the app's upload flow.
