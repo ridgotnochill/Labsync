@@ -16,6 +16,8 @@ create table if not exists public.user_roles (
 alter table public.user_roles enable row level security;
 revoke all on public.user_roles from anon, authenticated;
 grant select on public.user_roles to authenticated;
+-- The manage-users Edge Function (service role) reads and changes roles.
+grant select, insert, update, delete on public.user_roles to service_role;
 
 -- People can see their own role (the app reads it to show/hide buttons). Changing
 -- roles is done in the dashboard, which bypasses these rules.

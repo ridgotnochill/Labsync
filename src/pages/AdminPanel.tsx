@@ -2,9 +2,12 @@ import { useState } from 'react';
 import { Upload, Plus, Eye, Pencil } from 'lucide-react';
 import { adminTabs, labs } from '../data';
 import { Badge, BtnGhost, BtnPrimary, PageHeader, Tabs } from '../components/ui';
+import UsersPanel from '../components/UsersPanel';
+
+const TABS = ['Users', ...adminTabs];
 
 export default function AdminPanel() {
-  const [tab, setTab] = useState('Labs');
+  const [tab, setTab] = useState('Users');
 
   return (
     <div>
@@ -19,10 +22,12 @@ export default function AdminPanel() {
         }
       />
 
-      <Tabs tabs={adminTabs} active={tab} onChange={setTab} />
+      <Tabs tabs={TABS} active={tab} onChange={setTab} />
 
       <div className="card mt-5 overflow-hidden">
-        {tab === 'Labs' ? (
+        {tab === 'Users' ? (
+          <UsersPanel />
+        ) : tab === 'Labs' ? (
           <div className="overflow-x-auto">
             <table className="w-full min-w-[860px] text-sm">
               <thead>
