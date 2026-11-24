@@ -93,7 +93,7 @@ export default function Settings() {
 }
 
 function DataPanel() {
-  const { inventory, equipment, uploads, source, clearAll } = useLabData();
+  const { inventory, equipment, uploads, source, clearAll, canEdit } = useLabData();
   const [confirming, setConfirming] = useState(false);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
@@ -131,7 +131,7 @@ function DataPanel() {
         ))}
       </div>
 
-      <div className="mt-6 rounded-2xl border border-red-200 bg-red-50/60 p-5 dark:border-red-500/25 dark:bg-red-500/10">
+      {canEdit && <div className="mt-6 rounded-2xl border border-red-200 bg-red-50/60 p-5 dark:border-red-500/25 dark:bg-red-500/10">
         <div className="font-semibold text-red-700 dark:text-red-400">Clear all data</div>
         <p className="mt-1 text-sm text-[var(--text-body)]">
           Deletes every inventory item, equipment record and upload from LabPilot so you can start again from zero. This can't be undone.
@@ -151,7 +151,7 @@ function DataPanel() {
           )}
         </div>
         {message && <p className="mt-3 text-sm font-medium text-[var(--text-body)]">{message}</p>}
-      </div>
+      </div>}
     </div>
   );
 }

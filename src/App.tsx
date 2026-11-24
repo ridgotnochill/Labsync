@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import AppLayout from './components/AppLayout';
-import { LabDataProvider } from './lib/labStore';
+import { LabDataProvider, useLabData } from './lib/labStore';
 import { supabase } from './lib/supabase';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
@@ -17,6 +17,13 @@ import Settings from './pages/Settings';
 
 // Only used without Supabase (local demo mode); with Supabase the session comes from Supabase Auth.
 const KEY = 'labpilot.authed';
+
+/** Students are sent to the dashboard (the database also refuses their writes). */
+function EditorsOnly({ children }: { children: JSX.Element }) {
+  const { canEdit, roleLoading } = useLabData();
+  if (roleLoading) return null;
+  return canEdit ? children : <Navigate to="/dashboard" replace />;
+}
 
 export default function App() {
   // null = still checking for a saved Supabase session.
@@ -60,7 +67,7 @@ export default function App() {
           <Route path="/chemical-expiry" element={<ChemicalExpiry />} />
           <Route path="/damage-reports" element={<DamageReports />} />
           <Route path="/notifications" element={<Notifications />} />
-          <Route path="/admin" element={<AdminPanel />} />
+          <Route path="/admin" element={<EditorsOnly><AdminPanel /></EditorsOnly>} />
           <Route path="/settings" element={<Settings />} />
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>

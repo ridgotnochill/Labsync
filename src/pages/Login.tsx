@@ -1,17 +1,8 @@
 import { useState } from 'react';
-import { FlaskConical, GraduationCap, Beaker, UserCog, Shield } from 'lucide-react';
-import type { LucideIcon } from 'lucide-react';
+import { FlaskConical } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
-const ROLES: { key: string; label: string; icon: LucideIcon; desc: string }[] = [
-  { key: 'admin', label: 'Admin', icon: Shield, desc: 'Full system access' },
-  { key: 'assistant', label: 'Lab Assistant', icon: UserCog, desc: 'Manage lab resources' },
-  { key: 'faculty', label: 'Faculty', icon: Beaker, desc: 'Schedule & reports' },
-  { key: 'student', label: 'Student', icon: GraduationCap, desc: 'View & request' },
-];
-
 export default function Login({ onLogin }: { onLogin: () => void }) {
-  const [role, setRole] = useState('admin');
   const [email, setEmail] = useState(supabase ? '' : 'admin@example.com');
   const [password, setPassword] = useState(supabase ? '' : 'password');
   const [error, setError] = useState<string | null>(null);
@@ -59,37 +50,7 @@ export default function Login({ onLogin }: { onLogin: () => void }) {
         {/* Card */}
         <div className="rounded-[28px] border border-white/10 bg-white/[0.04] p-6 shadow-2xl backdrop-blur-xl sm:p-8">
           <h2 className="text-lg font-semibold text-white">Sign in to continue</h2>
-          <p className="mt-1 text-sm text-slate-400">Select your role and enter your credentials.</p>
-
-          {/* Role selector */}
-          <div className="mt-5 grid grid-cols-2 gap-2.5">
-            {ROLES.map((r) => {
-              const active = role === r.key;
-              return (
-                <button
-                  key={r.key}
-                  onClick={() => setRole(r.key)}
-                  className={`flex items-start gap-2.5 rounded-2xl border p-3 text-left transition-all ${
-                    active
-                      ? 'border-primary-500 bg-primary-500/15 ring-1 ring-primary-500/40'
-                      : 'border-white/10 bg-white/[0.03] hover:border-white/25'
-                  }`}
-                >
-                  <span
-                    className={`grid h-8 w-8 shrink-0 place-items-center rounded-lg ${
-                      active ? 'bg-primary-600 text-white' : 'bg-white/10 text-slate-300'
-                    }`}
-                  >
-                    <r.icon size={16} />
-                  </span>
-                  <span className="leading-tight">
-                    <span className="block text-sm font-medium text-white">{r.label}</span>
-                    <span className="block text-[11px] text-slate-400">{r.desc}</span>
-                  </span>
-                </button>
-              );
-            })}
-          </div>
+          <p className="mt-1 text-sm text-slate-400">Your role comes from your account.</p>
 
           {/* Fields */}
           <form

@@ -34,6 +34,8 @@ const FIELD =
 /* Button that opens the upload dialog — drop it into any page header. */
 export function UploadButton({ variant = 'primary', label = 'Upload Update' }: { variant?: 'primary' | 'ghost'; label?: string }) {
   const [open, setOpen] = useState(false);
+  const { canEdit } = useLabData();
+  if (!canEdit) return null; // students can't upload
   const Btn = variant === 'primary' ? BtnPrimary : BtnGhost;
   return (
     <>

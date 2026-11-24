@@ -30,7 +30,23 @@ export interface UploadLog {
   at: string;
 }
 
+export type Role = 'admin' | 'assistant' | 'faculty' | 'student';
+
+export const ROLE_LABEL: Record<Role, string> = {
+  admin: 'Admin',
+  assistant: 'Lab Assistant',
+  faculty: 'Faculty',
+  student: 'Student',
+};
+
 interface LabData {
+  /** Signed-in user's email (null in local mode). */
+  email: string | null;
+  role: Role;
+  /** Admin, Lab Assistant and Faculty may upload and clear data; Students only view. Enforced by RLS too. */
+  canEdit: boolean;
+  /** True until the role has been looked up (Supabase mode). */
+  roleLoading: boolean;
   inventory: InventoryRecord[];
   equipment: EquipmentRecord[];
   loading: boolean;
@@ -218,6 +234,15 @@ async function writeRemote(plan: UploadPlan, fileName: string, result: UploadRes
   });
 }
 
+/** The signed-in user's role from `user_roles`; anyone without a row is a student. */
+async function fetchRole(): Promise<{ email: string | null; role: Role }> {
+  const db = supabase!;
+  const { data: auth } = await db.auth.getUser();
+  if (!auth.user) return { email: null, role: 'student' };
+  const { data } = await db.from('user_roles').select('role').eq('user_id', auth.user.id).maybeSingle();
+  return { email: auth.user.email ?? null, role: (data?.role as Role | undefined) ?? 'student' };
+}
+
 /* ------------------------------------------------------------- provider --- */
 
 export function LabDataProvider({ children }: { children: ReactNode }) {
@@ -228,9 +253,18 @@ export function LabDataProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(!!supabase);
   const [error, setError] = useState<string | null>(null);
   const [recent, setRecent] = useState<Set<string>>(new Set());
+  const [roleLoading, setRoleLoading] = useState(!!supabase);
+  // Local mode has no accounts, so everyone gets full access there.
+  const [who, setWho] = useState<{ email: string | null; role: Role }>(() =>
+    supabase ? { email: null, role: 'student' } : { email: null, role: 'admin' }
+  );
 
   useEffect(() => {
     if (!supabase) return;
+    fetchRole()
+      .then(setWho)
+      .catch(() => {})
+      .finally(() => setRoleLoading(false));
     fetchRemote()
       .then(setData)
       .catch((e) => setError(`Couldn't load data from Supabase: ${e.message ?? e}`))
@@ -274,7 +308,7 @@ export function LabDataProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <LabDataContext.Provider value={{ ...data, loading, error, source, recent, applyUpload, clearAll }}>
+    <LabDataContext.Provider value={{ ...data, ...who, canEdit: who.role !== 'student', roleLoading, loading, error, source, recent, applyUpload, clearAll }}>
       {children}
     </LabDataContext.Provider>
   );
