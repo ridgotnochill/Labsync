@@ -45,6 +45,9 @@ create table if not exists public.uploads (
 -- before real use, switch to Supabase Auth and change `to anon, authenticated`
 -- to `to authenticated` on the write policies.
 -- ---------------------------------------------------------------------------
+-- Newer Supabase projects don't grant table access to the API roles by default.
+grant select, insert, update, delete on public.inventory_items, public.equipment, public.uploads to anon, authenticated;
+
 alter table public.inventory_items enable row level security;
 alter table public.equipment       enable row level security;
 alter table public.uploads         enable row level security;
